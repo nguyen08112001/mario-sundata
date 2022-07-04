@@ -27,6 +27,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
     // sprite
     this.setOrigin(0, 0);
     this.setFrame(0);
+    this.setScale(2)
 
     // physics
     this.currentScene.physics.world.enable(this);

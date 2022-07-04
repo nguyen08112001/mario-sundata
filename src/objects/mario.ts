@@ -43,7 +43,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     // sprite
     this.setOrigin(0.5, 0.5);
     this.setFlipX(false);
-    // this.setScale(2)
+    this.setScale(1.5)
 
     // input
     this.keys = new Map([
