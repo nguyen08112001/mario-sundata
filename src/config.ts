@@ -13,6 +13,7 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
   pixelArt: true,
   type: Phaser.AUTO,
   parent: 'game',
+  backgroundColor: '#FFFFAC',
   scene: [BootScene, MenuScene, HUDScene, GameScene],
   input: {
     keyboard: true
@@ -21,9 +22,9 @@ export const GameConfig: Phaser.Types.Core.GameConfig = {
     default: 'arcade',
     arcade: {
       gravity: { y: 475 },
-      debug: false
+      debug: true
     }
   },
-  backgroundColor: '#f8f8f8',
+  // backgroundColor: '#f8f8f8',
   render: { pixelArt: true, antialias: false }
 };

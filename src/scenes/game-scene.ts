@@ -31,6 +31,8 @@ export class GameScene extends Phaser.Scene {
   init(): void {}
 
   create(): void {
+
+    this.add.image(0, 0, 'mario')
     // *****************************************************************
     // SETUP TILEMAP
     // *****************************************************************
@@ -38,7 +40,8 @@ export class GameScene extends Phaser.Scene {
     // create our tilemap from Tiled JSON
     this.map = this.make.tilemap({ key: this.registry.get('level') });
     // add our tileset and layers to our tilemap
-    this.tileset = this.map.addTilesetImage('tiles');
+    this.tileset = this.map.addTilesetImage('map-tileset', 'tiles2');
+    // this.tileset = this.map.addTilesetImage('tiles');
     this.backgroundLayer = this.map.createLayer(
       'backgroundLayer',
       this.tileset,
@@ -56,6 +59,7 @@ export class GameScene extends Phaser.Scene {
 
     // set collision for tiles with the property collide set to true
     this.foregroundLayer.setCollisionByProperty({ collide: true });
+    this.foregroundLayer.setCollisionByExclusion([-1], true);
 
     // *****************************************************************
     // GAME OBJECTS
@@ -161,8 +165,9 @@ export class GameScene extends Phaser.Scene {
     // get the object layer in the tilemap named 'objects'
     const objects = this.map.getObjectLayer('objects').objects as any[];
 
+    
     objects.forEach((object) => {
-      if (object.type === 'portal') {
+      if (object.name === 'portal') {
         this.portals.add(
           new Portal({
             scene: this,
@@ -171,15 +176,14 @@ export class GameScene extends Phaser.Scene {
             height: object.width,
             width: object.height,
             spawn: {
-              x: object.properties.marioSpawnX,
-              y: object.properties.marioSpawnY,
-              dir: object.properties.direction
+              x: object.properties[1].value,
+              y: object.properties[2].value,
+              dir: object.properties[0].value
             }
           }).setName(object.name)
         );
       }
-
-      if (object.type === 'player') {
+      if (object.name === 'player') {
         this.player = new Mario({
           scene: this,
           x: this.registry.get('spawn').x,
@@ -188,7 +192,7 @@ export class GameScene extends Phaser.Scene {
         });
       }
 
-      if (object.type === 'goomba') {
+      if (object.name === 'goomba') {
         this.enemies.add(
           new Goomba({
             scene: this,
@@ -199,7 +203,7 @@ export class GameScene extends Phaser.Scene {
         );
       }
 
-      if (object.type === 'brick') {
+      if (object.name === 'brick') {
         this.bricks.add(
           new Brick({
             scene: this,
@@ -211,11 +215,12 @@ export class GameScene extends Phaser.Scene {
         );
       }
 
-      if (object.type === 'box') {
+      if (object.name === 'box') {
         this.boxes.add(
           new Box({
             scene: this,
-            content: object.properties.content,
+            // content: object.properties.content,
+            content: object.properties[0].value,
             x: object.x,
             y: object.y,
             texture: 'box'
@@ -223,19 +228,19 @@ export class GameScene extends Phaser.Scene {
         );
       }
 
-      if (object.type === 'collectible') {
+      if (object.name === 'collectible') {
         this.collectibles.add(
           new Collectible({
             scene: this,
             x: object.x,
             y: object.y,
-            texture: object.properties.kindOfCollectible,
+            texture: object.properties[0].value,
             points: 100
           })
         );
       }
 
-      if (object.type === 'platformMovingUpAndDown') {
+      if (object.name === 'platformMovingUpAndDown') {
         this.platforms.add(
           new Platform({
             scene: this,
@@ -253,7 +258,7 @@ export class GameScene extends Phaser.Scene {
         );
       }
 
-      if (object.type === 'platformMovingLeftAndRight') {
+      if (object.name === 'platformMovingLeftAndRight') {
         this.platforms.add(
           new Platform({
             scene: this,
