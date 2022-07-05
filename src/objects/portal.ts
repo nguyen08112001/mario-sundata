@@ -7,6 +7,8 @@ export class Portal extends Phaser.GameObjects.Zone {
   // variables
   private currentScene: Phaser.Scene;
   private portalDestinationForMario: IPortalDestination;
+  public x: number;
+  public y: number;
 
   public getPortalDestination(): IPortalDestination {
     return this.portalDestinationForMario;
@@ -18,6 +20,8 @@ export class Portal extends Phaser.GameObjects.Zone {
     // variables
     this.currentScene = aParams.scene;
     this.portalDestinationForMario = aParams.spawn;
+    this.x = aParams.x;
+    this.y = aParams.y;
 
     this.initZone();
     this.currentScene.add.existing(this);

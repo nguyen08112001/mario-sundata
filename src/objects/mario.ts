@@ -43,7 +43,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     // sprite
     this.setOrigin(0.5, 0.5);
     this.setFlipX(false);
-    this.setScale(1.5)
+    this.setScale(1)
 
     // input
     this.keys = new Map([
@@ -55,8 +55,11 @@ export class Mario extends Phaser.GameObjects.Sprite {
 
     // physics
     this.currentScene.physics.world.enable(this);
+
+    // this.growMario()
+    if (this.marioSize === 'small')
     this.adjustPhysicBodyToSmallSize();
-    this.growMario()
+    else this.adjustPhysicBodyToBigSize();
     this.body.maxVelocity.x = 100;
     this.body.maxVelocity.y = 500;
   }
@@ -70,7 +73,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
       this.handleInput();
       this.handleAnimations();
     } else {
-      this.setFrame(12);
+      this.anims.play('characterhit', true);
       if (this.y > this.currentScene.sys.canvas.height) {
         this.currentScene.scene.stop('GameScene');
         this.currentScene.scene.stop('HUDScene');
@@ -121,18 +124,34 @@ export class Mario extends Phaser.GameObjects.Sprite {
     if (this.keys.get('JUMP').isDown && !this.isJumping) {
       this.body.setVelocityY(-250);
       this.isJumping = true;
+      if (this.body.velocity.x >0) {
+        this.scene.tweens.add({
+          targets: this,
+          props: { angle: 360 },
+          duration: 300,
+          ease: 'Power0'
+      }) } else {
+        this.scene.tweens.add({
+          targets: this,
+          props: { angle: -360 },
+          duration: 300,
+          ease: 'Power0'
+      })
+      } 
     }
   }
 
   private handleAnimations(): void {
     if (this.body.velocity.y !== 0) {
       // mario is jumping or falling
-      this.anims.stop();
-      if (this.marioSize === 'small') {
-        this.setFrame(4);
-      } else {
-        this.setFrame(10);
-      }
+      // this.anims.stop();
+      // if (this.marioSize === 'small') {
+      //   this.setFrame(4);
+      // } else {
+      //   this.setFrame(10);
+      // }
+      // this.anims.play('characterjump', true);
+      
     } else if (this.body.velocity.x !== 0) {
       // mario is moving horizontal
 
@@ -149,13 +168,20 @@ export class Mario extends Phaser.GameObjects.Sprite {
       }
 
       if (this.body.velocity.x > 0) {
-        this.anims.play(this.marioSize + 'MarioWalk', true);
+        this.anims.play('character', true);
       } else {
-        this.anims.play(this.marioSize + 'MarioWalk', true);
+        this.anims.play('character', true);
       }
+      // if (this.body.velocity.x > 0) {
+      //   this.anims.play(this.marioSize + 'MarioWalk', true);
+      // } else {
+      //   this.anims.play(this.marioSize + 'MarioWalk', true);
+      // }
     } else {
       // mario is standing still
-      this.anims.stop();
+      // this.anims.stop();
+      this.anims.play('character', true);
+      
       if (this.marioSize === 'small') {
         this.setFrame(0);
       } else {
@@ -181,13 +207,15 @@ export class Mario extends Phaser.GameObjects.Sprite {
   }
 
   private adjustPhysicBodyToSmallSize(): void {
-    this.body.setSize(12, 12);
-    this.body.setOffset(2, 12);
+    this.setScale(1)
+    this.body.setSize(this.displayWidth*0.5, this.displayHeight*0.5);
+    this.body.setOffset(10, 12);
   }
 
   private adjustPhysicBodyToBigSize(): void {
-    this.body.setSize(15, 32);
-    this.body.setOffset(0, 0);
+    this.setScale(1.3)
+    this.body.setSize(this.displayWidth*0.3, this.displayHeight*0.5);
+    this.body.setOffset(10, 5);
   }
 
   public bounceUpAfterHitEnemyOnHead(): void {
@@ -211,7 +239,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
       // sets acceleration, velocity and speed to zero
       // stop all animations
       this.body.stop();
-      this.anims.stop();
+      // this.anims.stop();
 
       // make last dead jump and turn off collision check
       this.body.setVelocityY(-180);
