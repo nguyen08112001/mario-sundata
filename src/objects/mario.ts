@@ -56,6 +56,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     // physics
     this.currentScene.physics.world.enable(this);
     this.adjustPhysicBodyToSmallSize();
+    this.growMario()
     this.body.maxVelocity.x = 100;
     this.body.maxVelocity.y = 500;
   }
@@ -185,8 +186,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
   }
 
   private adjustPhysicBodyToBigSize(): void {
-    this.body.setSize(8, 16);
-    this.body.setOffset(4, 0);
+    this.body.setSize(15, 32);
+    this.body.setOffset(0, 0);
   }
 
   public bounceUpAfterHitEnemyOnHead(): void {

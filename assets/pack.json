@@ -12,29 +12,9 @@
                 "url": "./assets/maps/level1.json"
             },
             {
-                "type": "tilemapTiledJSON",
-                "key": "level1Room1",
-                "url": "./assets/maps/level1Room1.json"
-            },
-            {
-                "type": "tilemapTiledJSON",
-                "key": "level1Room2",
-                "url": "./assets/maps/level1Room2.json"
-            },
-            {
                 "type": "image",
                 "key": "tiles",
-                "url": "./assets/tiles/tiles.png"
-            },
-            {
-                "type": "tilemapTiledJSON",
-                "key": "level2",
-                "url": "./assets/test_tile/map.json"
-            },
-            {
-                "type": "image",
-                "key": "tiles2",
-                "url": "./assets/test_tile/mario.png"
+                "url": "./assets/tiles/mario.png"
             },
             {
                 "type": "json",

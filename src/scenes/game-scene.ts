@@ -31,8 +31,6 @@ export class GameScene extends Phaser.Scene {
   init(): void {}
 
   create(): void {
-
-    this.add.image(0, 0, 'mario')
     // *****************************************************************
     // SETUP TILEMAP
     // *****************************************************************
@@ -40,7 +38,7 @@ export class GameScene extends Phaser.Scene {
     // create our tilemap from Tiled JSON
     this.map = this.make.tilemap({ key: this.registry.get('level') });
     // add our tileset and layers to our tilemap
-    this.tileset = this.map.addTilesetImage('map-tileset', 'tiles2');
+    this.tileset = this.map.addTilesetImage('map-tileset','tiles');
     // this.tileset = this.map.addTilesetImage('tiles');
     this.backgroundLayer = this.map.createLayer(
       'backgroundLayer',
@@ -167,7 +165,9 @@ export class GameScene extends Phaser.Scene {
 
     
     objects.forEach((object) => {
-      if (object.name === 'portal') {
+      console.log(object)
+
+      if ( String(object.name).includes('level')) {
         this.portals.add(
           new Portal({
             scene: this,
@@ -359,6 +359,7 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handlePlayerPortalOverlap(_player: Mario, _portal: Portal): void {
+    console.log(123)
     if (
       (_player.getKeys().get('DOWN').isDown &&
         _portal.getPortalDestination().dir === 'down') ||
@@ -366,6 +367,7 @@ export class GameScene extends Phaser.Scene {
         _portal.getPortalDestination().dir === 'right')
     ) {
       // set new level and new destination for mario
+      console.log(234)
       this.registry.set('level', _portal.name);
       this.registry.set('spawn', {
         x: _portal.getPortalDestination().x,

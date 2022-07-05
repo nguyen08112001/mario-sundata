@@ -25,7 +25,7 @@ export class Portal extends Phaser.GameObjects.Zone {
 
   private initZone() {
     this.setOrigin(0, 0);
-    this.setScale(2)
+    // this.setScale(2)
 
     // physics
     this.currentScene.physics.world.enable(this);
