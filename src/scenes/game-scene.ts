@@ -157,7 +157,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   update(): void {
-    console.log(this.player.y)
     this.player.update();
   }
 
@@ -167,7 +166,6 @@ export class GameScene extends Phaser.Scene {
 
     
     objects.forEach((object) => {
-      console.log(object)
 
       if ( String(object.name).includes('level')) {
         this.portals.add(
@@ -192,7 +190,7 @@ export class GameScene extends Phaser.Scene {
           x: this.registry.get('spawn').x,
           y: this.registry.get('spawn').y,
           // x: object.x, y: object.y,
-          texture: 'character'
+          texture: 'characteridle'
         });
       }
 
@@ -202,7 +200,7 @@ export class GameScene extends Phaser.Scene {
             scene: this,
             x: object.x,
             y: object.y,
-            texture: 'goomba'
+            texture: 'testgoomba'
           })
         );
       }
@@ -238,7 +236,8 @@ export class GameScene extends Phaser.Scene {
             scene: this,
             x: object.x,
             y: object.y,
-            texture: object.properties[0].value,
+            // texture: object.properties[0].value,
+            texture: 'apple',
             points: 100
           })
         );
@@ -363,7 +362,6 @@ export class GameScene extends Phaser.Scene {
   }
 
   private handlePlayerPortalOverlap(_player: Mario, _portal: Portal): void {
-    console.log(123)
     if (
       (_player.getKeys().get('DOWN').isDown &&
         _portal.getPortalDestination().dir === 'down') ||
@@ -371,7 +369,6 @@ export class GameScene extends Phaser.Scene {
         _portal.getPortalDestination().dir === 'right')
     ) {
       // set new level and new destination for mario
-      console.log(234)
       this.registry.set('level', _portal.name);
       this.registry.set('spawn', {
         x: _portal.getPortalDestination().x,

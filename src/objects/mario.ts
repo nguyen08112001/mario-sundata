@@ -34,7 +34,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   private initSprite() {
     // variables
     this.marioSize = this.currentScene.registry.get('marioSize');
-    this.acceleration = 2000;
+    this.acceleration = 1000;
     this.isJumping = false;
     this.isDying = false;
     this.isVulnerable = true;
@@ -60,8 +60,9 @@ export class Mario extends Phaser.GameObjects.Sprite {
     if (this.marioSize === 'small')
     this.adjustPhysicBodyToSmallSize();
     else this.adjustPhysicBodyToBigSize();
-    this.body.maxVelocity.x = 100;
-    this.body.maxVelocity.y = 500;
+    // this.body.setGravityY(100)
+    this.body.maxVelocity.x = 150;
+    this.body.maxVelocity.y = 1000;
   }
 
   private addKey(key: string): Phaser.Input.Keyboard.Key {
@@ -138,6 +139,9 @@ export class Mario extends Phaser.GameObjects.Sprite {
           ease: 'Power0'
       })
       } 
+      this.setFrame(10)
+      this.anims.stop()
+
     }
   }
 
@@ -150,7 +154,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
       // } else {
       //   this.setFrame(10);
       // }
-      // this.anims.play('characterjump', true);
+      // this.anims.play('characteridle', true);
       
     } else if (this.body.velocity.x !== 0) {
       // mario is moving horizontal
@@ -180,17 +184,17 @@ export class Mario extends Phaser.GameObjects.Sprite {
     } else {
       // mario is standing still
       // this.anims.stop();
-      this.anims.play('character', true);
+      this.anims.play('characteridle', true);
       
-      if (this.marioSize === 'small') {
-        this.setFrame(0);
-      } else {
-        if (this.keys.get('DOWN').isDown) {
-          this.setFrame(13);
-        } else {
-          this.setFrame(6);
-        }
-      }
+      // if (this.marioSize === 'small') {
+      //   this.setFrame(0);
+      // } else {
+      //   if (this.keys.get('DOWN').isDown) {
+      //     this.setFrame(13);
+      //   } else {
+      //     this.setFrame(6);
+      //   }
+      // }
     }
   }
 
@@ -209,13 +213,13 @@ export class Mario extends Phaser.GameObjects.Sprite {
   private adjustPhysicBodyToSmallSize(): void {
     this.setScale(1)
     this.body.setSize(this.displayWidth*0.5, this.displayHeight*0.5);
-    this.body.setOffset(10, 12);
+    this.body.setOffset(10, 15);
   }
 
   private adjustPhysicBodyToBigSize(): void {
     this.setScale(1.3)
     this.body.setSize(this.displayWidth*0.3, this.displayHeight*0.5);
-    this.body.setOffset(10, 5);
+    this.body.setOffset(10, 10);
   }
 
   public bounceUpAfterHitEnemyOnHead(): void {

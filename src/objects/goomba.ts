@@ -8,6 +8,9 @@ export class Goomba extends Enemy {
     super(aParams);
     this.speed = -20;
     this.dyingScoreValue = 100;
+    this.setScale(0.5)
+    this.body.setSize(30, 30)
+    this.body.setOffset(10, 0)
   }
 
   update(): void {
@@ -21,10 +24,11 @@ export class Goomba extends Enemy {
         if (this.body.blocked.right || this.body.blocked.left) {
           this.speed = -this.speed;
           this.body.velocity.x = this.speed;
+          this.setFlipX(this.speed > 0 ? true : false)
         }
 
         // apply walk animation
-        this.anims.play('goombaWalk', true);
+        this.anims.play('testgoomba', true);
       } else {
         if (
           Phaser.Geom.Intersects.RectangleToRectangle(

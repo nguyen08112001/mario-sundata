@@ -82,6 +82,15 @@
             },
             {
                 "type": "spritesheet",
+                "key": "characteridle",
+                "url": "./assets/sprites/characteridle.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
                 "key": "rotatingCoin",
                 "url": "./assets/sprites/rotatingCoin.png",
                 "frameConfig": {
@@ -105,6 +114,24 @@
                 "frameConfig": {
                     "frameWidth": 8,
                     "frameHeight": 8
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "testgoomba",
+                "url": "./assets/sprites/Enemies/Slime/Idle-Run.png",
+                "frameConfig": {
+                    "frameWidth": 44,
+                    "frameHeight": 30
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "apple",
+                "url": "./assets/sprites/Items/Fruits/Apple.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 32
                 }
             },
             {

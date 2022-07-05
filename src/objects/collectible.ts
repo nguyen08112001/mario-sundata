@@ -20,8 +20,9 @@ export class Collectible extends Phaser.GameObjects.Sprite {
   private initSprite() {
     // sprite
     this.setOrigin(0, 0);
-    this.setFrame(0);
-    this.setScale(2)
+    // this.setFrame(0);
+    this.anims.play('apple')
+    this.setScale(1)
 
 
     // physics
