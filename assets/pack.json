@@ -22,6 +22,11 @@
                 "url": "./assets/tiles/mario.png"
             },
             {
+                "type": "image",
+                "key": "bg",
+                "url": "./assets/sprites/Background/Yellow.png"
+            },
+            {
                 "type": "json",
                 "key": "animationJSON",
                 "url": "./assets/animations/animations.json"
@@ -38,6 +43,15 @@
             {
                 "type": "spritesheet",
                 "key": "box",
+                "url": "./assets/sprites/Items/Boxes/box.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 64
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "boxhit",
                 "url": "./assets/sprites/box.png",
                 "frameConfig": {
                     "frameWidth": 8,
@@ -47,16 +61,25 @@
             {
                 "type": "spritesheet",
                 "key": "brick",
-                "url": "./assets/sprites/brick.png",
+                "url": "./assets/sprites/Items/Boxes/Box1/Idle.png",
                 "frameConfig": {
-                    "frameWidth": 8,
-                    "frameHeight": 8
+                    "frameWidth": 28,
+                    "frameHeight": 24
                 }
             },
             {
                 "type": "spritesheet",
                 "key": "character",
                 "url": "./assets/sprites/character.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "characterfall",
+                "url": "./assets/sprites/characterfall.png",
                 "frameConfig": {
                     "frameWidth": 32,
                     "frameHeight": 32
@@ -137,7 +160,7 @@
             {
                 "type": "image",
                 "key": "platform",
-                "url": "./assets/images/platform.png"
+                "url": "./assets/sprites/Traps/FallingPlatforms/Off.png"
             },
             {
                 "type": "image",
@@ -151,6 +174,15 @@
                 "frameConfig": {
                     "frameWidth": 8,
                     "frameHeight": 8
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "platformOn",
+                "url": "./assets/sprites/Traps/FallingPlatforms/On.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 10
                 }
             },
             {
@@ -174,10 +206,10 @@
             {
                 "type": "spritesheet",
                 "key": "mushroom",
-                "url": "./assets/collectibles/mushroom.png",
+                "url": "./assets/collectibles/mushroomIdle.png",
                 "frameConfig": {
-                    "frameWidth": 8,
-                    "frameHeight": 8
+                    "frameWidth": 32,
+                    "frameHeight": 32
                 }
             },
             {

@@ -139,7 +139,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
           ease: 'Power0'
       })
       } 
-      this.setFrame(10)
+      // this.setFrame(10)
       this.anims.stop()
 
     }
@@ -154,7 +154,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
       // } else {
       //   this.setFrame(10);
       // }
-      // this.anims.play('characteridle', true);
+      this.anims.play('characterfall', true);
       
     } else if (this.body.velocity.x !== 0) {
       // mario is moving horizontal

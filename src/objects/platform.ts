@@ -33,6 +33,7 @@ export class Platform extends Phaser.GameObjects.Image {
   }
 
   private initTween(): void {
+    // this.anims.play('platformOn')
     this.currentScene.tweens.add({
       targets: this,
       props: this.tweenProps,

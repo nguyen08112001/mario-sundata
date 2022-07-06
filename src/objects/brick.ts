@@ -21,11 +21,11 @@ export class Brick extends Phaser.GameObjects.Sprite {
     // sprite
     this.setOrigin(0, 0);
     this.setFrame(0);
-    this.setScale(2)
+    this.setScale(0.8)
 
     // physics
     this.currentScene.physics.world.enable(this);
-    this.body.setSize(8, 8);
+    this.body.setSize(16, 16);
     this.body.setAllowGravity(false);
     this.body.setImmovable(true);
   }

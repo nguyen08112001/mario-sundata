@@ -37,11 +37,12 @@ export class Box extends Phaser.GameObjects.Sprite {
     // sprite
     this.setOrigin(0, 0);
     this.setFrame(0);
-    this.setScale(2)
+    this.setScale(0.5)
 
     // physics
     this.currentScene.physics.world.enable(this);
-    this.body.setSize(8, 8);
+    this.body.setSize(32, 32);
+    this.body.setOffset(12, 15)
     this.body.setAllowGravity(false);
     this.body.setImmovable(true);
   }
@@ -56,8 +57,8 @@ export class Box extends Phaser.GameObjects.Sprite {
       ease: 'Power0',
       yoyo: true,
       onComplete: function () {
+        this.targets[0].setTint(0x808080);
         this.targets[0].active = false;
-        this.targets[0].setFrame(1);
       }
     });
   }

@@ -10,6 +10,7 @@ export class GameScene extends Phaser.Scene {
   // tilemap
   private map: Phaser.Tilemaps.Tilemap;
   private tileset: Phaser.Tilemaps.Tileset;
+  private tileset1: Phaser.Tilemaps.Tileset;
   private backgroundLayer: Phaser.Tilemaps.TilemapLayer;
   private foregroundLayer: Phaser.Tilemaps.TilemapLayer;
 
@@ -40,10 +41,10 @@ export class GameScene extends Phaser.Scene {
     // this.map = this.make.tilemap({ key: 'level1-1' });
     // add our tileset and layers to our tilemap
     this.tileset = this.map.addTilesetImage('map-tileset','tiles');
-    // this.tileset = this.map.addTilesetImage('tiles');
+    this.tileset1 = this.map.addTilesetImage('bg', 'bg');
     this.backgroundLayer = this.map.createLayer(
       'backgroundLayer',
-      this.tileset,
+      this.tileset1,
       0,
       0
     );
@@ -236,8 +237,8 @@ export class GameScene extends Phaser.Scene {
             scene: this,
             x: object.x,
             y: object.y,
-            // texture: object.properties[0].value,
-            texture: 'apple',
+            texture: object.properties[0].value,
+            // texture: 'apple',
             points: 100
           })
         );
@@ -319,7 +320,7 @@ export class GameScene extends Phaser.Scene {
       // ok, mario has really hit a box on the downside
       _box.yoyoTheBoxUpAndDown();
       this.collectibles.add(_box.spawnBoxContent());
-
+      console.log(_box.getBoxContentString())
       switch (_box.getBoxContentString()) {
         // have a look what is inside the box! Christmas time!
         case 'coin': {
@@ -338,6 +339,15 @@ export class GameScene extends Phaser.Scene {
           _box.addCoinAndScore(1, 100);
           break;
         }
+        case 'apple': {
+          _box.getContent().anims.play('apple')
+          _box.tweenBoxContent({ y: _box.y - 40, alpha: 0 }, 700, function () {
+            _box.getContent().destroy();
+          });
+
+          _box.addCoinAndScore(1, 100);
+          break;
+        }
         case 'flower': {
           _box.tweenBoxContent({ y: _box.y - 8 }, 200, function () {
             _box.getContent().anims.play('flower');
@@ -346,6 +356,7 @@ export class GameScene extends Phaser.Scene {
           break;
         }
         case 'mushroom': {
+          _box.getContent().setDisplaySize(20, 20)
           _box.popUpCollectible();
           break;
         }
