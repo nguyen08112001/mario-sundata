@@ -121,6 +121,28 @@
             "frameRate": 9
         },
         {
+            "key": "plant",
+            "frames": {
+                "typeOfGeneration": "generateFrameNumbers",
+                "key": "plant",
+                "start": 0,
+                "end": 10
+            },
+            "repeat": -1,
+            "frameRate": 9
+        },
+        {
+            "key": "saw",
+            "frames": {
+                "typeOfGeneration": "generateFrameNumbers",
+                "key": "saw",
+                "start": 0,
+                "end": 7
+            },
+            "repeat": -1,
+            "frameRate": 9
+        },
+        {
             "key": "apple",
             "frames": {
                 "typeOfGeneration": "generateFrameNumbers",

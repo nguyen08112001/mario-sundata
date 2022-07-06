@@ -1,10 +1,13 @@
+import { Saw } from './../objects/saw';
 import { Box } from '../objects/box';
 import { Brick } from '../objects/brick';
 import { Collectible } from '../objects/collectible';
 import { Goomba } from '../objects/goomba';
 import { Mario } from '../objects/mario';
+import { Plant } from '../objects/plant';
 import { Platform } from '../objects/platform';
 import { Portal } from '../objects/portal';
+import { Enemy } from '../objects/enemy';
 
 export class GameScene extends Phaser.Scene {
   // tilemap
@@ -22,6 +25,7 @@ export class GameScene extends Phaser.Scene {
   private platforms: Phaser.GameObjects.Group;
   private player: Mario;
   private portals: Phaser.GameObjects.Group;
+  public playerBullets: Phaser.GameObjects.Group;
 
   constructor() {
     super({
@@ -59,12 +63,17 @@ export class GameScene extends Phaser.Scene {
 
     // set collision for tiles with the property collide set to true
     this.foregroundLayer.setCollisionByProperty({ collide: true });
-    this.foregroundLayer.setCollisionByExclusion([-1], true);
+    this.foregroundLayer.setCollisionByExclusion([-1]);
 
     // *****************************************************************
     // GAME OBJECTS
     // *****************************************************************
     this.portals = this.add.group({
+      /*classType: Portal,*/
+      runChildUpdate: true
+    });
+
+    this.playerBullets = this.add.group({
       /*classType: Portal,*/
       runChildUpdate: true
     });
@@ -103,6 +112,10 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.enemies, this.boxes);
     this.physics.add.collider(this.enemies, this.bricks);
     this.physics.add.collider(this.player, this.bricks);
+    this.physics.add.collider(this.playerBullets, this.enemies, this.handlePlayerBulletsEnemyOverlap, null, this);
+    this.physics.add.collider(this.playerBullets, this.foregroundLayer, (saw: any, layer)=> {
+      saw.collided()
+    } );
 
     this.physics.add.collider(
       this.player,
@@ -205,6 +218,17 @@ export class GameScene extends Phaser.Scene {
           })
         );
       }
+      
+      if (object.name === 'plant') {
+        this.enemies.add(
+          new Plant({
+            scene: this,
+            x: object.x,
+            y: object.y,
+            texture: 'plant'
+          })
+        );
+      }
 
       if (object.name === 'brick') {
         this.bricks.add(
@@ -250,7 +274,7 @@ export class GameScene extends Phaser.Scene {
             scene: this,
             x: object.x,
             y: object.y,
-            texture: 'platform',
+            texture: 'platformOn',
             tweenProps: {
               y: {
                 value: 50,
@@ -309,6 +333,19 @@ export class GameScene extends Phaser.Scene {
       }
     }
   }
+private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
+    _saw.explode()
+      this.add.tween({
+        targets: _enemy,
+        props: { alpha: 0 },
+        duration: 1000,
+        ease: 'Power0',
+        yoyo: false,
+        onComplete: function () {
+          _enemy.destroy();
+        }
+      });
+    } 
 
   /**
    * Player <-> Box Collision

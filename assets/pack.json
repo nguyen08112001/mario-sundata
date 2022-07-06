@@ -141,6 +141,24 @@
             },
             {
                 "type": "spritesheet",
+                "key": "plant",
+                "url": "./assets/sprites/Enemies/Plant/Idle.png",
+                "frameConfig": {
+                    "frameWidth": 44,
+                    "frameHeight": 42
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "saw",
+                "url": "./assets/sprites/Traps/Saw/On.png",
+                "frameConfig": {
+                    "frameWidth": 38,
+                    "frameHeight": 38
+                }
+            },
+            {
+                "type": "spritesheet",
                 "key": "testgoomba",
                 "url": "./assets/sprites/Enemies/Slime/Idle-Run.png",
                 "frameConfig": {

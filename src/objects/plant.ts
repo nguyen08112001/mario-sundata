@@ -1,62 +1,66 @@
+import { Enemy } from './enemy';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 
-export class Plant extends Phaser.GameObjects.Sprite {
+export class Plant extends Enemy {
   body: Phaser.Physics.Arcade.Body;
 
-  // variables
-  protected currentScene: Phaser.Scene;
-  protected isActivated: boolean;
-  protected isDying: boolean;
-  protected speed: number;
-  protected dyingScoreValue: number;
-
   constructor(aParams: ISpriteConstructor) {
-    super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
-
-    // variables
-    this.currentScene = aParams.scene;
-    this.initSprite();
-    this.currentScene.add.existing(this);
+    super(aParams);
+    this.speed = 0;
+    this.dyingScoreValue = 200;
+    this.setScale(1)
+    this.body.setSize(30, 30)
+    this.body.setOffset(10, 10)
   }
 
-  protected initSprite() {
-    // variables
-    this.isActivated = false;
-    this.isDying = false;
+  update(): void {
+    if (!this.isDying) {
+      if (this.isActivated) {
+        // goomba is still alive
+        // add speed to velocity x
+        this.body.setVelocityX(this.speed);
 
-    // sprite
-    this.setOrigin(0, 0);
-    this.setFrame(0);
-    this.setScale(2)
+        // if goomba is moving into obstacle from map layer, turn
+        if (this.body.blocked.right || this.body.blocked.left) {
+          this.speed = -this.speed;
+          this.body.velocity.x = this.speed;
+          this.setFlipX(this.speed > 0 ? true : false)
+        }
 
-    // physics
-    this.currentScene.physics.world.enable(this);
-    this.body.setSize(8, 8);
-  }
-
-  protected showAndAddScore(): void {
-    this.currentScene.registry.values.score += this.dyingScoreValue;
-    this.currentScene.events.emit('scoreChanged');
-
-    let scoreText = this.currentScene.add
-      .dynamicBitmapText(
-        this.x,
-        this.y - 20,
-        'font',
-        this.dyingScoreValue.toString(),
-        4
-      )
-      .setOrigin(0, 0);
-
-    this.currentScene.add.tween({
-      targets: scoreText,
-      props: { y: scoreText.y - 25 },
-      duration: 800,
-      ease: 'Power0',
-      yoyo: false,
-      onComplete: function () {
-        scoreText.destroy();
+        // apply walk animation
+        this.anims.play('plant', true);
+      } else {
+        if (
+          Phaser.Geom.Intersects.RectangleToRectangle(
+            this.getBounds(),
+            this.currentScene.cameras.main.worldView
+          )
+        ) {
+          this.isActivated = true;
+        }
       }
-    });
+    } else {
+      // goomba is dying, so stop animation, make velocity 0 and do not check collisions anymore
+      this.anims.stop();
+      this.body.setVelocity(0, 0);
+      this.body.checkCollision.none = true;
+    }
+  }
+
+  public gotHitOnHead(): void {
+    this.isDying = true;
+    this.setFrame(2);
+    this.showAndAddScore();
+  }
+
+  protected gotHitFromBulletOrMarioHasStar(): void {
+    this.isDying = true;
+    this.body.setVelocityX(20);
+    this.body.setVelocityY(-20);
+    this.setFlipY(true);
+  }
+
+  public isDead(): void {
+    this.destroy();
   }
 }

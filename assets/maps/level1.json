@@ -24,6 +24,12 @@
          "id":1,
          "name":"foregroundLayer",
          "opacity":1,
+         "properties":[
+                {
+                 "name":"collide",
+                 "type":"bool",
+                 "value":true
+                }],
          "type":"tilelayer",
          "visible":true,
          "width":80,
@@ -53,6 +59,74 @@
                  "y":320
                 }, 
                 {
+                 "class":"box",
+                 "height":16,
+                 "id":75,
+                 "name":"box",
+                 "properties":[
+                        {
+                         "name":"content",
+                         "type":"string",
+                         "value":"apple"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":368,
+                 "y":272
+                }, 
+                {
+                 "class":"box",
+                 "height":16,
+                 "id":76,
+                 "name":"box",
+                 "properties":[
+                        {
+                         "name":"content",
+                         "type":"string",
+                         "value":"apple"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":384,
+                 "y":272
+                }, 
+                {
+                 "class":"box",
+                 "height":16,
+                 "id":77,
+                 "name":"box",
+                 "properties":[
+                        {
+                         "name":"content",
+                         "type":"string",
+                         "value":"apple"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":400,
+                 "y":272
+                }, 
+                {
+                 "class":"box",
+                 "height":16,
+                 "id":78,
+                 "name":"box",
+                 "properties":[
+                        {
+                         "name":"content",
+                         "type":"string",
+                         "value":"apple"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":416,
+                 "y":272
+                }, 
+                {
                  "class":"goomba",
                  "height":16,
                  "id":30,
@@ -73,6 +147,17 @@
                  "width":16,
                  "x":336,
                  "y":320
+                }, 
+                {
+                 "class":"plant",
+                 "height":16,
+                 "id":79,
+                 "name":"plant",
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":256,
+                 "y":352
                 }, 
                 {
                  "class":"goomba",
@@ -288,74 +373,6 @@
                  "y":352.2290224568
                 }, 
                 {
-                 "class":"box",
-                 "height":16,
-                 "id":34,
-                 "name":"box",
-                 "properties":[
-                        {
-                         "name":"content",
-                         "type":"string",
-                         "value":"rotatingCoin"
-                        }],
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":384,
-                 "y":272
-                }, 
-                {
-                 "class":"box",
-                 "height":16,
-                 "id":63,
-                 "name":"box",
-                 "properties":[
-                        {
-                         "name":"content",
-                         "type":"string",
-                         "value":"rotatingCoin"
-                        }],
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":352,
-                 "y":272
-                }, 
-                {
-                 "class":"box",
-                 "height":16,
-                 "id":64,
-                 "name":"box",
-                 "properties":[
-                        {
-                         "name":"content",
-                         "type":"string",
-                         "value":"rotatingCoin"
-                        }],
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":368,
-                 "y":272
-                }, 
-                {
-                 "class":"box",
-                 "height":16,
-                 "id":65,
-                 "name":"box",
-                 "properties":[
-                        {
-                         "name":"content",
-                         "type":"string",
-                         "value":"rotatingCoin"
-                        }],
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":400,
-                 "y":272
-                }, 
-                {
                  "class":"brick",
                  "height":16,
                  "id":36,
@@ -527,7 +544,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":75,
+ "nextobjectid":80,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.0",
@@ -544,6 +561,79 @@
          "spacing":1,
          "tilecount":5112,
          "tileheight":16,
+         "tiles":[
+                {
+                 "id":126,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":127,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":162,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":163,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":198,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":199,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":234,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }, 
+                {
+                 "id":235,
+                 "properties":[
+                        {
+                         "name":"collide",
+                         "type":"bool",
+                         "value":true
+                        }]
+                }],
          "tilewidth":16,
          "transparentcolor":"#ff00ff"
         }, 

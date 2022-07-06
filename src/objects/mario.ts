@@ -1,4 +1,6 @@
+import { GameScene } from './../scenes/game-scene';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
+import { Saw } from './saw';
 
 export class Mario extends Phaser.GameObjects.Sprite {
   body: Phaser.Physics.Arcade.Body;
@@ -11,7 +13,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   private isDying: boolean;
   private isVulnerable: boolean;
   private vulnerableCounter: number;
-
+  private toLeft: boolean;
   // input
   private keys: Map<string, Phaser.Input.Keyboard.Key>;
 
@@ -26,7 +28,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   constructor(aParams: ISpriteConstructor) {
     super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
 
-    this.currentScene = aParams.scene;
+    this.currentScene = aParams.scene as GameScene;
     this.initSprite();
     this.currentScene.add.existing(this);
   }
@@ -39,6 +41,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     this.isDying = false;
     this.isVulnerable = true;
     this.vulnerableCounter = 100;
+    this.toLeft = false;
 
     // sprite
     this.setOrigin(0.5, 0.5);
@@ -50,7 +53,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
       ['LEFT', this.addKey('LEFT')],
       ['RIGHT', this.addKey('RIGHT')],
       ['DOWN', this.addKey('DOWN')],
-      ['JUMP', this.addKey('SPACE')]
+      ['JUMP', this.addKey('UP')],
+      ['ATTACK', this.addKey('SPACE')]
     ]);
 
     // physics
@@ -113,13 +117,27 @@ export class Mario extends Phaser.GameObjects.Sprite {
     if (this.keys.get('RIGHT').isDown) {
       this.body.setAccelerationX(this.acceleration);
       this.setFlipX(false);
+      this.toLeft = false;
     } else if (this.keys.get('LEFT').isDown) {
       this.body.setAccelerationX(-this.acceleration);
       this.setFlipX(true);
+      this.toLeft = true;
     } else {
       this.body.setVelocityX(0);
       this.body.setAccelerationX(0);
     }
+
+    //handle attack
+    // if (this.keys.get('ATTACK').isDown) {
+    //   this.handleFire()
+ 
+    // }
+
+    this.scene.input.on('pointerdown', this.handleFire, this)
+        this.currentScene.input.keyboard.on('keydown', (event: { code: string; }) => {
+            if (event.code === "Space")
+                this.handleFire()
+        })
 
     // handle jumping
     if (this.keys.get('JUMP').isDown && !this.isJumping) {
@@ -254,5 +272,20 @@ export class Mario extends Phaser.GameObjects.Sprite {
       this.body.checkCollision.left = false;
       this.body.checkCollision.right = false;
     }
+  }
+
+  private handleFire() {
+    let tmp = this.currentScene as GameScene
+      
+
+        let saw = new Saw({
+          scene: this.scene,
+          x: this.x,
+          y: this.y,
+          texture: 'saw',
+          tweenProps: {}
+      })
+      tmp.playerBullets.add(saw)
+      saw.fire(this.x, this.y, this.toLeft)
   }
 }
