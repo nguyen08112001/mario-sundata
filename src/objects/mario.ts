@@ -14,6 +14,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
   private isVulnerable: boolean;
   private vulnerableCounter: number;
   private toLeft: boolean;
+  private disableFireCounter: number;
+  private isDisableFire: boolean;
   // input
   private keys: Map<string, Phaser.Input.Keyboard.Key>;
 
@@ -41,6 +43,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
     this.isDying = false;
     this.isVulnerable = true;
     this.vulnerableCounter = 100;
+    this.isDisableFire = false;
+    this.disableFireCounter = 100;
     this.toLeft = false;
 
     // sprite
@@ -86,6 +90,14 @@ export class Mario extends Phaser.GameObjects.Sprite {
       }
     }
 
+    if (this.isDisableFire) {
+      if (this.disableFireCounter > 0) {
+        this.disableFireCounter -= 1;
+      } else {
+        this.disableFireCounter = 20;
+        this.isDisableFire = false;
+      }
+    }
     if (!this.isVulnerable) {
       if (this.vulnerableCounter > 0) {
         this.vulnerableCounter -= 1;
@@ -134,10 +146,13 @@ export class Mario extends Phaser.GameObjects.Sprite {
     // }
 
     this.scene.input.on('pointerdown', this.handleFire, this)
-        this.currentScene.input.keyboard.on('keydown', (event: { code: string; }) => {
-            if (event.code === "Space")
-                this.handleFire()
-        })
+    this.currentScene.input.keyboard.on('keydown', (event: { code: string; }) => {
+        if (event.code === "Space" && !this.isDisableFire) {
+          this.handleFire()
+          this.isDisableFire = true
+
+        }
+    })
 
     // handle jumping
     if (this.keys.get('JUMP').isDown && !this.isJumping) {

@@ -79,6 +79,7 @@ export class Saw extends Phaser.GameObjects.Sprite {
         this.hasCollided = true
         let tmp = this.currentScene as GameScene
         tmp.playerBullets.remove(this, true, true)
+        this.destroy()
         // 爆炸动画结束,从场景移除,并销毁
         // this.once('animationcomplete', function () { ///this refers to an arcade sprite.
         //     this.currentScene.playerBullets.remove(this, true, true)
