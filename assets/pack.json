@@ -18,6 +18,11 @@
             },
             {
                 "type": "tilemapTiledJSON",
+                "key": "level3",
+                "url": "./assets/maps/level3.json"
+            },
+            {
+                "type": "tilemapTiledJSON",
                 "key": "level1-1",
                 "url": "./assets/maps/level1-1.json"
             },
@@ -52,6 +57,51 @@
                 "frameConfig": {
                     "frameWidth": 64,
                     "frameHeight": 64
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "bossHit",
+                "url": "./assets/sprites/Enemies/Trunk/Hit.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "bossIdle",
+                "url": "./assets/sprites/Enemies/Trunk/Idle.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "bossRun",
+                "url": "./assets/sprites/Enemies/Trunk/Run.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "bossRun",
+                "url": "./assets/sprites/Enemies/Trunk/Attack.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "bossBullet",
+                "url": "./assets/sprites/Enemies/Trunk/Bullet.png",
+                "frameConfig": {
+                    "frameWidth": 16,
+                    "frameHeight": 16
                 }
             },
             {

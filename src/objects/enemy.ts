@@ -9,6 +9,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   protected isDying: boolean;
   protected speed: number;
   protected dyingScoreValue: number;
+  public heal: number;
 
   constructor(aParams: ISpriteConstructor) {
     super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
@@ -61,9 +62,15 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   public gotHitOnHead(): void {
-    this.isDying = true;
-    this.setFrame(2);
-    this.showAndAddScore();
+    if (this.heal < 0) return;
+    this.heal -= 3;
+    if (this.heal <= 0) {
+        this.addDeadTween()
+        this.isDying = true;
+        this.setFrame(2);
+        this.showAndAddScore();
+    }
+    
   }
 
   public isDead(): void {
@@ -71,10 +78,37 @@ export class Enemy extends Phaser.GameObjects.Sprite {
   }
 
   public gotHitFromBulletOrMarioHasStar(): void {
-    this.isDying = true;
-    this.body.setVelocityX(20);
-    this.body.setVelocityY(-20);
-    this.setFlipY(true);
-    this.showAndAddScore();
+    if (this.heal < 0) return;
+    this.heal -= 1;
+    if (this.heal <= 0) {
+        this.addDeadTween()
+        this.isDying = true;
+      this.body.setVelocityX(20);
+      this.body.setVelocityY(-20);
+      this.setFlipY(true);
+      this.showAndAddScore();
+    }
+    
+  }
+
+  public addDeadTween() {
+    this.currentScene.add.tween({
+      targets: this,
+      props: { alpha: 0 },
+      duration: 1000,
+      ease: 'Power0',
+      yoyo: false,
+      onComplete: function () {
+        this.isDead;
+      }
+    });
+  }
+
+  private getDamage(damage: number) {
+    if (this.heal < 0) return;
+    this.heal -= damage;
+    if (this.heal <= 0) {
+        this.addDeadTween()
+    }
   }
 }

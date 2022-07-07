@@ -3,27 +3,30 @@ import { ISpriteConstructor } from '../interfaces/sprite.interface';
 import { GameScene } from '../scenes/game-scene';
 import { PlantBullet } from './plantBullet';
 
-export class Plant extends Enemy {
+export class Boss extends Enemy {
   body: Phaser.Physics.Arcade.Body;
-
+    fireEvent: Phaser.Time.TimerEvent;
+ 
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
-    this.speed = 0;
-    this.dyingScoreValue = 200;
-    this.setScale(1)
-    this.body.setSize(30, 30)
-    this.body.setOffset(10, 10)
-    this.heal = 1
-    this.currentScene.time.addEvent({
-      delay: 3500,                // ms
+    this.speed = -100;
+    this.dyingScoreValue = 1000;
+    this.setScale(3)
+    this.body.setSize(25, 25)
+    this.body.setOffset(20,7)
+    this.heal = 50;
+
+    this.fireEvent =  this.currentScene.time.addEvent({
+      delay: 1000,                // ms
       callback: this.handleFire,
       //args: [],
       callbackScope: this,
       loop: true
-  });
+    });
   }
 
   update(): void {
+    console.log(this.heal)
     
     // this.handleFire()
     if (!this.isDying) {
@@ -38,8 +41,9 @@ export class Plant extends Enemy {
           this.body.velocity.x = this.speed;
           this.setFlipX(this.speed > 0 ? true : false)
         }
+
         // apply walk animation
-        this.anims.play('plant', true);
+        this.anims.play('bossRun', true);
       } else {
         if (
           Phaser.Geom.Intersects.RectangleToRectangle(
@@ -59,16 +63,30 @@ export class Plant extends Enemy {
   }
 
   private handleFire() {
-    if (this.isDying) return
+    if (this.isDying) 
+    {
+        this.currentScene.time.removeEvent(this.fireEvent);
+    this.fireEvent = undefined
+    return
+    }
     let tmp = this.currentScene as GameScene
   
         let bullet = new PlantBullet({
           scene: this.currentScene,
           x: this.x,
-          y: this.y+100,
+          y: this.y+500,
           texture: 'plantBullet',
       })
       tmp.enemyBullets.add(bullet)
-      bullet.fire(this.x, this.y+15, true)
+    //   let tmpp = Phaser.Math.Between(50,85)
+      bullet.fire(this.x+65, this.y+Phaser.Math.Between(50,85), true)
   }
+
+  public gotHitOnHead() {
+    super.gotHitOnHead()
+    this.anims.play('bossHit')
+    this.body.setVelocityY(-10);
+
+  }
+
 }

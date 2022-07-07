@@ -5,7 +5,7 @@ export class Bullet extends Phaser.GameObjects.Sprite {
   body: Phaser.Physics.Arcade.Body;
 
   // variables
-  private currentScene: Phaser.Scene;
+  protected currentScene: Phaser.Scene;
   private  hasCollided: boolean;
 
   constructor(aParams: ISpriteConstructor) {
@@ -52,6 +52,7 @@ export class Bullet extends Phaser.GameObjects.Sprite {
     }
 
     explode() {
+        if (this.body === undefined) return
         this.body.allowGravity = false;
         this.body.velocity.y = 0;
 

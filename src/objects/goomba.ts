@@ -11,6 +11,7 @@ export class Goomba extends Enemy {
     this.setScale(0.5)
     this.body.setSize(30, 30)
     this.body.setOffset(10, 0)
+    this.heal = 1
   }
 
   update(): void {
@@ -45,15 +46,5 @@ export class Goomba extends Enemy {
       this.body.setVelocity(0, 0);
       this.body.checkCollision.none = true;
     }
-  }
-
-  public gotHitOnHead(): void {
-    this.isDying = true;
-    this.setFrame(2);
-    this.showAndAddScore();
-  }
-
-  public isDead(): void {
-    this.destroy();
   }
 }

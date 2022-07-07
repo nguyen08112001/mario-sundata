@@ -55,6 +55,12 @@ export class MenuScene extends Phaser.Scene {
       this.scene.start('GameScene');
       this.scene.bringToTop('HUDScene');
     }
+    if (this.startKeyLevel3.isDown) {
+      this.registry.set('level', 'level3');
+      this.scene.start('HUDScene');
+      this.scene.start('GameScene');
+      this.scene.bringToTop('HUDScene');
+    }
   }
 
   private initGlobalDataManager(): void {

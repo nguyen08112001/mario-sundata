@@ -9,6 +9,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   private currentScene: Phaser.Scene;
   private marioSize: string;
   private acceleration: number;
+  public jumpVelo: number;
   private isJumping: boolean;
   private isDying: boolean;
   private isVulnerable: boolean;
@@ -46,6 +47,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     this.isDisableFire = false;
     this.disableFireCounter = 20;
     this.toLeft = false;
+    this.jumpVelo = 250;
 
     // sprite
     this.setOrigin(0.5, 0.5);
@@ -64,11 +66,11 @@ export class Mario extends Phaser.GameObjects.Sprite {
     // physics
     this.currentScene.physics.world.enable(this);
 
-    // this.growMario()
+    this.growMario()
     if (this.marioSize === 'small')
     this.adjustPhysicBodyToSmallSize();
     else this.adjustPhysicBodyToBigSize();
-    // this.body.setGravityY(100)
+    // this.body.setGravityY(200)
     this.body.maxVelocity.x = 150;
     this.body.maxVelocity.y = 1000;
   }
@@ -156,7 +158,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
 
     // handle jumping
     if (this.keys.get('JUMP').isDown && !this.isJumping) {
-      this.body.setVelocityY(-250);
+      this.body.setVelocityY(-this.jumpVelo);
       this.isJumping = true;
       if (this.body.velocity.x >0) {
         this.scene.tweens.add({
@@ -268,7 +270,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   public gotHit(): void {
     this.isVulnerable = false;
     if (this.marioSize === 'big') {
-      this.shrinkMario();
+      // this.shrinkMario();
     } else {
       // mario is dying
       this.isDying = true;
@@ -300,6 +302,6 @@ export class Mario extends Phaser.GameObjects.Sprite {
           texture: 'saw',
       })
       tmp.playerBullets.add(saw)
-      saw.fire(this.x, this.y, this.toLeft)
+      saw.fire(this.x, this.y-15, this.toLeft)
   }
 }

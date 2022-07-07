@@ -10,6 +10,7 @@ import { Platform } from '../objects/platform';
 import { Portal } from '../objects/portal';
 import { Enemy } from '../objects/enemy';
 import { Bullet } from '../objects/Bullet';
+import { Boss } from '../objects/Boss';
 
 export class GameScene extends Phaser.Scene {
   // tilemap
@@ -146,7 +147,7 @@ export class GameScene extends Phaser.Scene {
       this
     );
 
-    this.physics.add.overlap(
+    this.physics.add.collider(
       this.player,
       this.enemies,
       this.handlePlayerEnemyOverlap,
@@ -200,6 +201,11 @@ export class GameScene extends Phaser.Scene {
       this.map.heightInPixels
     );
     this.cameras.main.setZoom(4);
+    if (this.registry.get('level') === 'level3') {
+      this.cameras.main.setZoom(2);
+      this.player.jumpVelo = 400
+      this.player.body.setGravityY(200)
+    }
   }
 
   update(): void {
@@ -257,6 +263,17 @@ export class GameScene extends Phaser.Scene {
             x: object.x,
             y: object.y,
             texture: 'plant'
+          })
+        );
+      }
+      
+      if (object.name === 'boss') {
+        this.enemies.add(
+          new Boss({
+            scene: this,
+            x: object.x,
+            y: object.y,
+            texture: 'bossIdle'
           })
         );
       }
@@ -347,16 +364,7 @@ export class GameScene extends Phaser.Scene {
       // player hit enemy on top
       _player.bounceUpAfterHitEnemyOnHead();
       _enemy.gotHitOnHead();
-      this.add.tween({
-        targets: _enemy,
-        props: { alpha: 0 },
-        duration: 1000,
-        ease: 'Power0',
-        yoyo: false,
-        onComplete: function () {
-          _enemy.isDead();
-        }
-      });
+      // _enemy.addDeadTween()
     } else {
       // player got hit from the side or on the head
       if (_player.getVulnerable()) {
@@ -367,16 +375,7 @@ export class GameScene extends Phaser.Scene {
 private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
     _saw.explode()
     _enemy.gotHitFromBulletOrMarioHasStar();
-      this.add.tween({
-        targets: _enemy,
-        props: { alpha: 0 },
-        duration: 1000,
-        ease: 'Power0',
-        yoyo: false,
-        onComplete: function () {
-          _enemy.destroy();
-        }
-      });
+      // _enemy.addDeadTween()
     } 
 
   /**
@@ -384,6 +383,7 @@ private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
    * @param _player [Mario]
    * @param _box    [Box]
    */
+
   private playerHitBox(_player: Mario, _box: Box): void {
     if (_box.body.touching.down && _box.active) {
       // ok, mario has really hit a box on the downside
