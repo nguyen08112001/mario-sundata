@@ -8,6 +8,7 @@ export class PlantBullet extends Bullet {
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
     this.body.allowGravity = false;
+    this.setScale(1)
   }
 
 }

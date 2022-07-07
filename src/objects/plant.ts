@@ -8,7 +8,7 @@ export class Plant extends Enemy {
 
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
-    this.speed = 50;
+    this.speed = 0;
     this.dyingScoreValue = 200;
     this.setScale(1)
     this.body.setSize(30, 30)
@@ -70,7 +70,7 @@ export class Plant extends Enemy {
   }
 
   private handleFire() {
-    if (!this.body) return
+    if (this.isDying) return
     let tmp = this.currentScene as GameScene
   
         let bullet = new PlantBullet({
@@ -80,6 +80,6 @@ export class Plant extends Enemy {
           texture: 'plantBullet',
       })
       tmp.enemyBullets.add(bullet)
-      bullet.fire(this.x, this.y+15, this.speed < 0)
+      bullet.fire(this.x, this.y+15, true)
   }
 }

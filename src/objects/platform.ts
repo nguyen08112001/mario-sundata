@@ -1,6 +1,6 @@
 import { IPlatformConstructor } from '../interfaces/platform.interface';
 
-export class Platform extends Phaser.GameObjects.Image {
+export class Platform extends Phaser.GameObjects.Sprite {
   body: Phaser.Physics.Arcade.Body;
 
   // variables
@@ -26,9 +26,10 @@ export class Platform extends Phaser.GameObjects.Image {
 
     // physics
     this.currentScene.physics.world.enable(this);
-    this.body.setSize(24, 24);
+    this.body.setSize(28, 8);
     this.body.setAllowGravity(false);
     this.body.setImmovable(true);
+    this.body.friction.x = 0
   }
 
   private initTween(): void {
@@ -39,6 +40,7 @@ export class Platform extends Phaser.GameObjects.Image {
       yoyo: true,
       repeat: -1
     });
+    this.anims.play('platformOn')
   }
 
   update(): void {}

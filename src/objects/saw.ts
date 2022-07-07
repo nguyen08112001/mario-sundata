@@ -7,7 +7,10 @@ export class Saw extends Bullet {
 
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
-    this.body.allowGravity = true;
+    // this.body.allowGravity = true;
+    // this.body.velocity.y = -150;
+    this.body.setSize(24, 24)
+    this.anims.play('saw')
   }
 
 }

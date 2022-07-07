@@ -1,5 +1,7 @@
 export class MenuScene extends Phaser.Scene {
-  private startKey: Phaser.Input.Keyboard.Key;
+  private startKeyLevel1: Phaser.Input.Keyboard.Key;
+  private startKeyLevel2: Phaser.Input.Keyboard.Key;
+  private startKeyLevel3: Phaser.Input.Keyboard.Key;
   private bitmapTexts: Phaser.GameObjects.BitmapText[] = [];
 
   constructor() {
@@ -9,10 +11,21 @@ export class MenuScene extends Phaser.Scene {
   }
 
   init(): void {
-    this.startKey = this.input.keyboard.addKey(
+    this.startKeyLevel1 = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.S
     );
-    this.startKey.isDown = false;
+    this.startKeyLevel1.isDown = false;
+
+    this.startKeyLevel2 = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.D
+    );
+    this.startKeyLevel2.isDown = false;
+
+    this.startKeyLevel3 = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.F
+    );
+    this.startKeyLevel3.isDown = false;
+
     this.initGlobalDataManager();
   }
 
@@ -21,17 +34,23 @@ export class MenuScene extends Phaser.Scene {
 
     this.bitmapTexts.push(
       this.add.bitmapText(
-        this.sys.canvas.width / 2 - 22,
-        105,
+        this.sys.canvas.width / 2 - 500,
+        700,
         'font',
-        'START',
-        8
+        'S: LEVEL1    D: LEVEL2     F: LEVEL3',
+        30
       )
     );
   }
 
   update(): void {
-    if (this.startKey.isDown) {
+    if (this.startKeyLevel1.isDown) {
+      this.scene.start('HUDScene');
+      this.scene.start('GameScene');
+      this.scene.bringToTop('HUDScene');
+    }
+    if (this.startKeyLevel2.isDown) {
+      this.registry.set('level', 'level2');
       this.scene.start('HUDScene');
       this.scene.start('GameScene');
       this.scene.bringToTop('HUDScene');

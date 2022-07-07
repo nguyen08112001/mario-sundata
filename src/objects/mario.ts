@@ -44,7 +44,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     this.isVulnerable = true;
     this.vulnerableCounter = 100;
     this.isDisableFire = false;
-    this.disableFireCounter = 100;
+    this.disableFireCounter = 20;
     this.toLeft = false;
 
     // sprite

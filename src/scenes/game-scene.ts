@@ -51,7 +51,7 @@ export class GameScene extends Phaser.Scene {
     this.tileset1 = this.map.addTilesetImage('bg', 'bg');
     this.backgroundLayer = this.map.createLayer(
       'backgroundLayer',
-      this.tileset1,
+      this.tileset,
       0,
       0
     );
@@ -127,22 +127,15 @@ export class GameScene extends Phaser.Scene {
       null, 
       this
     );
-    this.physics.add.collider(this.playerBullets, 
-      this.enemies, 
-      this.handlePlayerBulletsEnemyOverlap, 
-      null, 
-      this
-    );
-
     this.physics.add.collider(this.playerBullets, this.foregroundLayer, (saw: any, layer)=> {
       saw.collided()
     } );
     this.physics.add.collider(this.enemyBullets, this.foregroundLayer, (bullet: any, layer)=> {
       bullet.collided()
     } );
-    this.physics.add.collider(this.enemyBullets, this.playerBullets, (enemy: any, player: any)=> {
-      enemy.collided()
-      player.collided()
+    this.physics.add.overlap(this.enemyBullets, this.playerBullets, (enemy: any, player: any)=> {
+      enemy.explode()
+      player.explode()
     } );
 
     this.physics.add.collider(
@@ -182,7 +175,10 @@ export class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(
       this.player,
-      this.platforms
+      this.platforms,
+      (_player: Mario, _platform: Platform) => {
+              _player.body.x = _platform.body.x+10;
+      }, null,this
     );
 
     this.physics.add.overlap(
@@ -216,7 +212,6 @@ export class GameScene extends Phaser.Scene {
 
     
     objects.forEach((object) => {
-
       if ( String(object.name).includes('level')) {
         this.portals.add(
           new Portal({
@@ -314,7 +309,7 @@ export class GameScene extends Phaser.Scene {
             tweenProps: {
               y: {
                 value: 50,
-                duration: 1500,
+                duration: 4500,
                 ease: 'Power0'
               }
             }
@@ -464,7 +459,7 @@ private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
 
       // restart the game scene
       this.scene.restart();
-    } else if (_portal.name === 'exit') {
+    } else if (_portal.name === 'levelexit') {
       this.scene.stop('GameScene');
       this.scene.stop('HUDScene');
       this.scene.start('MenuScene');
