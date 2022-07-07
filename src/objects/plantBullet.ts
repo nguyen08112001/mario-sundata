@@ -2,12 +2,12 @@
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 import { Bullet } from './Bullet';
 
-export class Saw extends Bullet {
+export class PlantBullet extends Bullet {
   body: Phaser.Physics.Arcade.Body;
 
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
-    this.body.allowGravity = true;
+    this.body.allowGravity = false;
   }
 
 }

@@ -1,3 +1,4 @@
+import { PlantBullet } from './../objects/plantBullet';
 import { Saw } from './../objects/saw';
 import { Box } from '../objects/box';
 import { Brick } from '../objects/brick';
@@ -8,6 +9,7 @@ import { Plant } from '../objects/plant';
 import { Platform } from '../objects/platform';
 import { Portal } from '../objects/portal';
 import { Enemy } from '../objects/enemy';
+import { Bullet } from '../objects/Bullet';
 
 export class GameScene extends Phaser.Scene {
   // tilemap
@@ -26,6 +28,7 @@ export class GameScene extends Phaser.Scene {
   private player: Mario;
   private portals: Phaser.GameObjects.Group;
   public playerBullets: Phaser.GameObjects.Group;
+  public enemyBullets: Phaser.GameObjects.Group;
 
   constructor() {
     super({
@@ -101,6 +104,11 @@ export class GameScene extends Phaser.Scene {
       /*classType: Platform,*/
       runChildUpdate: true
     });
+    
+    this.enemyBullets = this.add.group({
+      /*classType: Platform,*/
+      runChildUpdate: true
+    });
 
     this.loadObjectsFromTilemap();
 
@@ -112,9 +120,29 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.enemies, this.boxes);
     this.physics.add.collider(this.enemies, this.bricks);
     this.physics.add.collider(this.player, this.bricks);
-    this.physics.add.collider(this.playerBullets, this.enemies, this.handlePlayerBulletsEnemyOverlap, null, this);
+    this.physics.add.collider(
+      this.playerBullets, 
+      this.enemies, 
+      this.handlePlayerBulletsEnemyOverlap, 
+      null, 
+      this
+    );
+    this.physics.add.collider(this.playerBullets, 
+      this.enemies, 
+      this.handlePlayerBulletsEnemyOverlap, 
+      null, 
+      this
+    );
+
     this.physics.add.collider(this.playerBullets, this.foregroundLayer, (saw: any, layer)=> {
       saw.collided()
+    } );
+    this.physics.add.collider(this.enemyBullets, this.foregroundLayer, (bullet: any, layer)=> {
+      bullet.collided()
+    } );
+    this.physics.add.collider(this.enemyBullets, this.playerBullets, (enemy: any, player: any)=> {
+      enemy.collided()
+      player.collided()
     } );
 
     this.physics.add.collider(
@@ -132,6 +160,17 @@ export class GameScene extends Phaser.Scene {
       null,
       this
     );
+    this.physics.add.overlap(
+      this.player,
+      this.enemyBullets,
+      (_player: Mario, _bullet: Bullet) => {
+        if (_player.getVulnerable()) {
+          _player.gotHit();
+        }
+      },
+      null,
+      this
+    );
 
     this.physics.add.overlap(
       this.player,
@@ -143,10 +182,7 @@ export class GameScene extends Phaser.Scene {
 
     this.physics.add.collider(
       this.player,
-      this.platforms,
-      this.handlePlayerOnPlatform,
-      null,
-      this
+      this.platforms
     );
 
     this.physics.add.overlap(
@@ -274,7 +310,7 @@ export class GameScene extends Phaser.Scene {
             scene: this,
             x: object.x,
             y: object.y,
-            texture: 'platformOn',
+            texture: 'platform',
             tweenProps: {
               y: {
                 value: 50,
@@ -311,7 +347,7 @@ export class GameScene extends Phaser.Scene {
    * @param _player [Mario]
    * @param _enemy  [Enemy]
    */
-  private handlePlayerEnemyOverlap(_player: Mario, _enemy: Goomba): void {
+  private handlePlayerEnemyOverlap(_player: Mario, _enemy: Enemy): void {
     if (_player.body.touching.down && _enemy.body.touching.up) {
       // player hit enemy on top
       _player.bounceUpAfterHitEnemyOnHead();
@@ -335,6 +371,7 @@ export class GameScene extends Phaser.Scene {
   }
 private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
     _saw.explode()
+    _enemy.gotHitFromBulletOrMarioHasStar();
       this.add.tween({
         targets: _enemy,
         props: { alpha: 0 },

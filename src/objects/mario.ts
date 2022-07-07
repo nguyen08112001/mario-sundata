@@ -245,8 +245,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
 
   private adjustPhysicBodyToSmallSize(): void {
     this.setScale(1)
-    this.body.setSize(this.displayWidth*0.5, this.displayHeight*0.5);
-    this.body.setOffset(10, 15);
+    this.body.setSize(this.displayWidth*0.5, this.displayHeight*0.7);
+    this.body.setOffset(10, 8);
   }
 
   private adjustPhysicBodyToBigSize(): void {
@@ -298,7 +298,6 @@ export class Mario extends Phaser.GameObjects.Sprite {
           x: this.x,
           y: this.y,
           texture: 'saw',
-          tweenProps: {}
       })
       tmp.playerBullets.add(saw)
       saw.fire(this.x, this.y, this.toLeft)

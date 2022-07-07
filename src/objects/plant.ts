@@ -1,19 +1,31 @@
 import { Enemy } from './enemy';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
+import { GameScene } from '../scenes/game-scene';
+import { PlantBullet } from './plantBullet';
 
 export class Plant extends Enemy {
   body: Phaser.Physics.Arcade.Body;
 
   constructor(aParams: ISpriteConstructor) {
     super(aParams);
-    this.speed = 0;
+    this.speed = 50;
     this.dyingScoreValue = 200;
     this.setScale(1)
     this.body.setSize(30, 30)
     this.body.setOffset(10, 10)
+
+    this.currentScene.time.addEvent({
+      delay: 1500,                // ms
+      callback: this.handleFire,
+      //args: [],
+      callbackScope: this,
+      loop: true
+  });
   }
 
   update(): void {
+    
+    // this.handleFire()
     if (!this.isDying) {
       if (this.isActivated) {
         // goomba is still alive
@@ -53,14 +65,21 @@ export class Plant extends Enemy {
     this.showAndAddScore();
   }
 
-  protected gotHitFromBulletOrMarioHasStar(): void {
-    this.isDying = true;
-    this.body.setVelocityX(20);
-    this.body.setVelocityY(-20);
-    this.setFlipY(true);
-  }
-
   public isDead(): void {
     this.destroy();
+  }
+
+  private handleFire() {
+    if (!this.body) return
+    let tmp = this.currentScene as GameScene
+  
+        let bullet = new PlantBullet({
+          scene: this.currentScene,
+          x: this.x,
+          y: this.y+100,
+          texture: 'plantBullet',
+      })
+      tmp.enemyBullets.add(bullet)
+      bullet.fire(this.x, this.y+15, this.speed < 0)
   }
 }

@@ -53,13 +53,6 @@ export class Goomba extends Enemy {
     this.showAndAddScore();
   }
 
-  protected gotHitFromBulletOrMarioHasStar(): void {
-    this.isDying = true;
-    this.body.setVelocityX(20);
-    this.body.setVelocityY(-20);
-    this.setFlipY(true);
-  }
-
   public isDead(): void {
     this.destroy();
   }

@@ -17,7 +17,7 @@ export class MenuScene extends Phaser.Scene {
   }
 
   create(): void {
-    this.add.image(0, 0, 'title').setOrigin(0, 0);
+    this.add.image(0, 0, 'title').setOrigin(0, 0).setScale(8);
 
     this.bitmapTexts.push(
       this.add.bitmapText(
