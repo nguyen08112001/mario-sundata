@@ -1,14 +1,14 @@
-import { PlantBullet } from './../objects/plantBullet';
-import { Saw } from './../objects/saw';
-import { Box } from '../objects/box';
-import { Brick } from '../objects/brick';
-import { Collectible } from '../objects/collectible';
-import { Goomba } from '../objects/goomba';
-import { Mario } from '../objects/mario';
-import { Plant } from '../objects/plant';
-import { Platform } from '../objects/platform';
-import { Portal } from '../objects/portal';
-import { Enemy } from '../objects/enemy';
+import { PlantBullet } from '../objects/PlantBullet';
+import { Saw } from '../objects/Saw';
+import { Box } from '../objects/Box';
+import { Brick } from '../objects/Brick';
+import { Collectible } from '../objects/Collectible';
+import { Goomba } from '../objects/Goomba';
+import { Mario } from '../objects/Mario';
+import { Plant } from '../objects/Plant';
+import { Platform } from '../objects/Platform';
+import { Portal } from '../objects/Portal';
+import { Enemy } from '../objects/Enemy';
 import { Bullet } from '../objects/Bullet';
 import { Boss } from '../objects/Boss';
 

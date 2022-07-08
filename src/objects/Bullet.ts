@@ -2,42 +2,42 @@ import { GameScene } from './../scenes/game-scene';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 
 export class Bullet extends Phaser.GameObjects.Sprite {
-  body: Phaser.Physics.Arcade.Body;
-
-  // variables
-  protected currentScene: Phaser.Scene;
-  private  hasCollided: boolean;
-
-  constructor(aParams: ISpriteConstructor) {
-    super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
+    body: Phaser.Physics.Arcade.Body;
 
     // variables
-    this.currentScene = aParams.scene;
-    this.hasCollided = false
+    protected currentScene: Phaser.Scene;
+    private  hasCollided: boolean;
 
-    this.initImage();
-    this.currentScene.add.existing(this);
-  }
+    constructor(aParams: ISpriteConstructor) {
+        super(aParams.scene, aParams.x, aParams.y, aParams.texture, aParams.frame);
 
-  private initImage(): void {
-    // image
-    this.setOrigin(0, 0);
-    this.setScale(0.5)
+        // variables
+        this.currentScene = aParams.scene;
+        this.hasCollided = false
 
-    // physics
-    this.currentScene.physics.world.enable(this);
-    this.body.setSize(10, 10);
-    this.body.setAllowGravity(false);
-    this.body.setImmovable(true);
-  }
+        this.initImage();
+        this.currentScene.add.existing(this);
+    }
 
-  update(): void {}
+    private initImage(): void {
+        // image
+        this.setOrigin(0, 0);
+        this.setScale(0.5)
 
-  fire(x: number, y: number, left: boolean) {
-    // this.body.allowGravity = false;
+        // physics
+        this.currentScene.physics.world.enable(this);
+        this.body.setSize(10, 10);
+        this.body.setAllowGravity(false);
+        this.body.setImmovable(true);
+    }
 
-    this.setPosition(x, y);
-    this.body.velocity.x = 200 * (left ? -1 : 1);
+    update(): void {}
+
+    fire(x: number, y: number, left: boolean) {
+        // this.body.allowGravity = false;
+
+        this.setPosition(x, y);
+        this.body.velocity.x = 200 * (left ? -1 : 1);
     }
 
     collided() {
