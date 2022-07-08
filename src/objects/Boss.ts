@@ -2,6 +2,7 @@ import { Enemy } from './enemy';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 import { GameScene } from '../scenes/game-scene';
 import { PlantBullet } from './plantBullet';
+import { BossBullet } from './BossBullet';
 
 export class Boss extends Enemy {
   body: Phaser.Physics.Arcade.Body;
@@ -43,7 +44,7 @@ export class Boss extends Enemy {
         }
 
         // apply walk animation
-        this.anims.play('bossRun', true);
+        this.anims.play('bossAttack', true);
       } else {
         if (
           Phaser.Geom.Intersects.RectangleToRectangle(
@@ -71,22 +72,29 @@ export class Boss extends Enemy {
     }
     let tmp = this.currentScene as GameScene
   
-        let bullet = new PlantBullet({
+        let bullet = new BossBullet({
           scene: this.currentScene,
           x: this.x,
           y: this.y+500,
-          texture: 'plantBullet',
+          texture: 'bossBullet',
       })
       tmp.enemyBullets.add(bullet)
     //   let tmpp = Phaser.Math.Between(50,85)
-      bullet.fire(this.x+65, this.y+Phaser.Math.Between(50,85), true)
+      // bullet.fire(this.x+65, this.y+Phaser.Math.Between(50,85), this.speed < 0)
+      bullet.fire(this.x+65, this.y+40, this.speed < 0)
   }
 
   public gotHitOnHead() {
     super.gotHitOnHead()
-    this.anims.play('bossHit')
-    this.body.setVelocityY(-10);
-
+    this.anims.play('bossHit', true)
+    this.body.setVelocityY(-50);
+    if (this.speed  === 100) this.speed = 200
+    if (this.speed  === -100) this.speed = -200
+    this.currentScene.time.delayedCall(3000, () => {
+      if (this.speed === 200) this.speed = 100
+      if (this.speed === -200) this.speed = -100
+      
+  }, [], this);  // delay in ms
   }
 
 }

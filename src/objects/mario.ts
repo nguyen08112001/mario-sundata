@@ -86,6 +86,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     } else {
       this.anims.play('characterhit', true);
       if (this.y > this.currentScene.sys.canvas.height) {
+        this.currentScene.sound.pauseAll()
         this.currentScene.scene.stop('GameScene');
         this.currentScene.scene.stop('HUDScene');
         this.currentScene.scene.start('MenuScene');
@@ -270,7 +271,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
   public gotHit(): void {
     this.isVulnerable = false;
     if (this.marioSize === 'big') {
-      // this.shrinkMario();
+      this.shrinkMario();
     } else {
       // mario is dying
       this.isDying = true;

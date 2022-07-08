@@ -121,7 +121,7 @@ export class GameScene extends Phaser.Scene {
     this.physics.add.collider(this.enemies, this.boxes);
     this.physics.add.collider(this.enemies, this.bricks);
     this.physics.add.collider(this.player, this.bricks);
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.playerBullets, 
       this.enemies, 
       this.handlePlayerBulletsEnemyOverlap, 
@@ -201,11 +201,19 @@ export class GameScene extends Phaser.Scene {
       this.map.heightInPixels
     );
     this.cameras.main.setZoom(4);
+
+
     if (this.registry.get('level') === 'level3') {
       this.cameras.main.setZoom(2);
       this.player.jumpVelo = 400
       this.player.body.setGravityY(200)
     }
+
+    let music = this.sound.add('music')
+        music.play({
+            volume: 1,
+            loop: true
+        })
   }
 
   update(): void {
@@ -458,8 +466,10 @@ private handlePlayerBulletsEnemyOverlap(_saw: Saw, _enemy: Enemy): void {
       });
 
       // restart the game scene
+      this.sound.pauseAll()
       this.scene.restart();
     } else if (_portal.name === 'levelexit') {
+      this.sound.pauseAll()
       this.scene.stop('GameScene');
       this.scene.stop('HUDScene');
       this.scene.start('MenuScene');

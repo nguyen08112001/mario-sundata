@@ -143,6 +143,17 @@
             "frameRate": 9
         },
         {
+            "key": "bossBullet",
+            "frames": {
+                "typeOfGeneration": "generateFrameNumbers",
+                "key": "bossBullet",
+                "start": 0,
+                "end": 0
+            },
+            "repeat": -1,
+            "frameRate": 9
+        },
+        {
             "key": "saw",
             "frames": {
                 "typeOfGeneration": "generateFrameNumbers",
@@ -213,7 +224,7 @@
             "key": "bossIdle",
             "frames": {
                 "typeOfGeneration": "generateFrameNumbers",
-                "key": "bossHit",
+                "key": "bossIdle",
                 "start": 0,
                 "end": 17
             },
