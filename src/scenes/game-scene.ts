@@ -406,7 +406,6 @@ export class GameScene extends Phaser.Scene {
         // ok, mario has really hit a box on the downside
         _box.yoyoTheBoxUpAndDown();
         this.collectibles.add(_box.spawnBoxContent());
-        console.log(_box.getBoxContentString())
         switch (_box.getBoxContentString()) {
             // have a look what is inside the box! Christmas time!
             case 'coin': {

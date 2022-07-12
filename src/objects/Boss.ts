@@ -28,18 +28,17 @@ export class Boss extends Enemy {
         this.hp = new HealthBar(this.currentScene, aParams.x , aParams.y - 110);
         
         this.fireEvent =  this.currentScene.time.addEvent({
-        delay: 1000,
-        callback: this.handleFire,
-        //args: [],
-        callbackScope: this,
-        loop: true
+            delay: 1000,
+            callback: this.handleFire,
+            //args: [],
+            callbackScope: this,
+            loop: true
         });
         this.createdPortal = false
     }
 
     update(): void {
         if (this.createdPortal) return
-        console.log(this.heal)
         this.hp.x = this.x + 50
         this.hp.y = this.y + 100
         this.hp.draw()

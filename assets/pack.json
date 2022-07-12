@@ -43,6 +43,11 @@
             },
             {
                 "type": "image",
+                "key": "dust",
+                "url": "./assets/sprites/Other/Dust.png"
+            },
+            {
+                "type": "image",
                 "key": "bg",
                 "url": "./assets/sprites/Background/Gray.png"
             },

@@ -1,6 +1,7 @@
 import { GameScene } from '../scenes/game-scene';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 import { Saw } from './Saw';
+import { Dust } from './Dust';
 
 export class Mario extends Phaser.GameObjects.Sprite {
     body: Phaser.Physics.Arcade.Body;
@@ -16,7 +17,11 @@ export class Mario extends Phaser.GameObjects.Sprite {
     private vulnerableCounter: number;
     private toLeft: boolean;
     private disableFireCounter: number;
+
     private isDisableFire: boolean;
+    private disableDustCounter: number;
+
+    private isDisableDust: boolean;
     private onWall: boolean;
     // input
     private keys: Map<string, Phaser.Input.Keyboard.Key>;
@@ -55,6 +60,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
         this.isVulnerable = true;
         this.vulnerableCounter = 100;
         this.isDisableFire = false;
+        this.disableDustCounter = 5;
+        this.isDisableDust = false;
         this.disableFireCounter = 20;
         this.toLeft = false;
         this.jumpVelo = 250;
@@ -74,6 +81,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
         ]);
 
         // physics
+        // this.growMario()
         this.currentScene.physics.world.enable(this);
 
         if (this.marioSize === 'small')
@@ -111,6 +119,15 @@ export class Mario extends Phaser.GameObjects.Sprite {
                 this.isDisableFire = false;
             }
         }
+        if (this.isDisableDust) {
+            if (this.disableDustCounter > 0) {
+                this.disableDustCounter -= 1;
+            } else {
+                this.disableDustCounter = 5;
+                this.isDisableDust = false;
+            }
+        }
+
         if (!this.isVulnerable) {
             if (this.vulnerableCounter > 0) {
                 this.vulnerableCounter -= 1;
@@ -167,10 +184,14 @@ export class Mario extends Phaser.GameObjects.Sprite {
 
         // handle movements to left and right
         if (this.keys.get('RIGHT').isDown) {
+            if(this.body.blocked.down) 
+                this.createDust(false)
             this.body.setAccelerationX(this.acceleration);
             this.setFlipX(false);
             this.toLeft = false;
         } else if (this.keys.get('LEFT').isDown) {
+            if(this.body.blocked.down) 
+                this.createDust(true)
             this.body.setAccelerationX(-this.acceleration);
             this.setFlipX(true);
             this.toLeft = true;
@@ -189,13 +210,14 @@ export class Mario extends Phaser.GameObjects.Sprite {
             if (event.code === "Space" && !this.isDisableFire) {
                 this.handleFire()
                 this.isDisableFire = true
-
             }
         })
 
         // handle jumping
-        if ((   this.keys.get('JUMP').isDown && !this.isJumping) 
-            || (this.keys.get('JUMP').isDown && this.onWall)) {
+        if ((this.keys.get('JUMP').isDown && !this.isJumping) 
+        || (this.keys.get('JUMP').isDown && this.onWall)) 
+        {
+            this.createJumpDust()
             this.body.setVelocityY(-this.jumpVelo);
             this.isJumping = true;
             this.anims.play('characterjump', true)
@@ -204,6 +226,92 @@ export class Mario extends Phaser.GameObjects.Sprite {
             }, [], this); 
 
         }
+    }
+
+    private createDust(isleft: boolean) {
+        if (this.isDisableDust) return;
+        this.isDisableDust = true;
+        let dust: any;
+        if (isleft) {
+            dust = new Dust({
+                scene: this.currentScene, 
+                x: this.x+5, 
+                y: this.y+5, 
+                texture: 'dust'
+            })
+        } else {
+            dust = new Dust({
+                scene: this.currentScene, 
+                x: this.x-10, 
+                y: this.y+5, 
+                texture: 'dust'
+            })
+        }
+        dust.initImage(isleft)
+
+
+        this.currentScene.time.addEvent({
+            delay: 1,
+            callback: () => {
+                dust.update()
+            },
+            //args: [],
+            callbackScope: this,
+            loop: true
+        });
+    }
+    
+    private createJumpDust() {
+        if (this.onWall) return
+        let dust1: any;
+        let dust2: any;
+        let dust3: any;
+        let dust4: any;
+ 
+        dust1 = new Dust({
+            scene: this.currentScene, 
+            x: this.x, 
+            y: this.y+5, 
+            texture: 'dust'
+        })
+        dust2 = new Dust({
+            scene: this.currentScene, 
+            x: this.x, 
+            y: this.y+5, 
+            texture: 'dust'
+        })
+        dust3 = new Dust({
+            scene: this.currentScene, 
+            x: this.x, 
+            y: this.y+5, 
+            texture: 'dust'
+        })
+        dust4 = new Dust({
+            scene: this.currentScene, 
+            x: this.x, 
+            y: this.y+5, 
+            texture: 'dust'
+        })
+
+
+        dust1.initJump1();
+        dust2.initJump2();
+        dust3.initJump3();
+        dust4.initJump4();
+
+
+        this.currentScene.time.addEvent({
+            delay: 20,
+            callback: () => {
+                dust1.update()
+                dust2.update()
+                dust3.update()
+                dust4.update()
+            },
+            //args: [],
+            callbackScope: this,
+            loop: true
+        });
     }
 
     private handleAnimations(): void {
@@ -268,23 +376,13 @@ export class Mario extends Phaser.GameObjects.Sprite {
     }
 
     public bounceUpAfterHitEnemyOnHead(): void {
-        // this.currentScene.add.tween({
-        //     targets: this,
-        //     props: { y: this.y - 50 },
-        //     duration: 350,
-        //     ease: 'Power1',
-        //     yoyo: true,
-        //     onComplete: () => {
-        //         this.anims.play('characterfall', true);
-        //         console.log(345)
-        //     }
-        // });
 
         this.body.setVelocityY(-this.jumpVelo/1.5);
-            this.isJumping = true;
-            this.currentScene.time.delayedCall(200, () => {
-                this.anims.play('characterfall', true);
-            }, [], this);  // delay in ms
+        this.createJumpDust()
+        this.isJumping = true;
+        this.currentScene.time.delayedCall(200, () => {
+            this.anims.play('characterfall', true);
+        }, [], this);  // delay in ms
     }
 
     public gotHit(): void {
