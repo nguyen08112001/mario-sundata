@@ -75,6 +75,23 @@
                  "width":16,
                  "x":32,
                  "y":112
+                }, 
+                {
+                 "class":"box",
+                 "height":16,
+                 "id":32,
+                 "name":"box",
+                 "properties":[
+                        {
+                         "name":"content",
+                         "type":"string",
+                         "value":"mushroom"
+                        }],
+                 "rotation":0,
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":176
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -83,7 +100,7 @@
          "y":0
         }],
  "nextlayerid":4,
- "nextobjectid":32,
+ "nextobjectid":33,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.0",

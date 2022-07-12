@@ -1,4 +1,3 @@
-import { IBrickConstructor } from '../interfaces/brick.interface';
 import { ISpriteConstructor } from '../interfaces/sprite.interface';
 
 export class Dust extends Phaser.GameObjects.Image {
