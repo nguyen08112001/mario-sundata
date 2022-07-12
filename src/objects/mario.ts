@@ -317,7 +317,8 @@ export class Mario extends Phaser.GameObjects.Sprite {
     private handleAnimations(): void {
         if (this.body.velocity.y !== 0 && !this.onWall) {
         // mario is jumping or falling
-            // this.anims.play('characterfall', true);
+            if (this.body.velocity.y > 0)
+                this.anims.play('characterfall', true);
         
         } else if (this.body.velocity.x !== 0) {
         // mario is moving horizontal
