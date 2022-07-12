@@ -33,6 +33,7 @@ export class GameScene extends Phaser.Scene {
     public playerBullets: Phaser.GameObjects.Group;
     public enemyBullets: Phaser.GameObjects.Group;
     animatedTiles: any;
+    minimap: Phaser.Cameras.Scene2D.Camera;
 
     constructor() {
         super({
@@ -211,6 +212,11 @@ export class GameScene extends Phaser.Scene {
         );
         this.cameras.main.setZoom(4);
 
+        this.minimap = this.cameras.add(800, 10, 400, 100).setZoom(0.5).setName('mini');
+        this.minimap.setBackgroundColor(0x002244);
+        this.minimap.scrollX = 1600;
+        this.minimap.scrollY = 300;
+
 
         if (this.registry.get('level') === 'level3' || this.registry.get('level') === 'level4') {
         this.cameras.main.setZoom(2);
@@ -227,6 +233,7 @@ export class GameScene extends Phaser.Scene {
 
     update(): void {
         this.player.update();
+        this.minimap.scrollX = Phaser.Math.Clamp(this.player.x - 200, 200, 700);
     }
 
     private loadObjectsFromTilemap(): void {
