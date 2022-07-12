@@ -34,8 +34,6 @@ export class Bullet extends Phaser.GameObjects.Sprite {
     update(): void {}
 
     fire(x: number, y: number, left: boolean) {
-        // this.body.allowGravity = false;
-
         this.setPosition(x, y);
         this.body.velocity.x = 200 * (left ? -1 : 1);
     }

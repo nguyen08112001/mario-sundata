@@ -146,17 +146,6 @@
                  "y":416
                 }, 
                 {
-                 "class":"goomba",
-                 "height":16,
-                 "id":126,
-                 "name":"goomba",
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":1120,
-                 "y":384
-                }, 
-                {
                  "class":"plant",
                  "height":16,
                  "id":129,
@@ -165,17 +154,6 @@
                  "visible":true,
                  "width":16,
                  "x":640,
-                 "y":288
-                }, 
-                {
-                 "class":"plant",
-                 "height":16,
-                 "id":131,
-                 "name":"plant",
-                 "rotation":0,
-                 "visible":true,
-                 "width":16,
-                 "x":1152,
                  "y":288
                 }, 
                 {

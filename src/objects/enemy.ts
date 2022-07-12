@@ -79,7 +79,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
     public gotHitFromBulletOrMarioHasStar(): void {
         if (this.heal < 0) return;
-        this.heal -= 1;
+        this.heal -= 3;
         if (this.heal <= 0) {
             this.addDeadTween()
             this.isDying = true;

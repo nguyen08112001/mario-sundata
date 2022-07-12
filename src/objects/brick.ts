@@ -41,9 +41,6 @@ export class Brick extends Phaser.GameObjects.Sprite {
                 .setDisplaySize(8, 8);
 
                 this.currentScene.physics.world.enable(brick);
-
-                //brick.body.setVelocity(40 * i, -40 * i);
-                //brick.body.setSize(4, 4);
             }
 
             // destroy brick

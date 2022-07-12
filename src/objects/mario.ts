@@ -20,6 +20,10 @@ export class Mario extends Phaser.GameObjects.Sprite {
     private onWall: boolean;
     // input
     private keys: Map<string, Phaser.Input.Keyboard.Key>;
+    growAudio: Phaser.Sound.BaseSound;
+    jumpAudio: Phaser.Sound.BaseSound;
+    shrinkAudio: Phaser.Sound.BaseSound;
+    deadAudio: Phaser.Sound.BaseSound;
 
     public getKeys(): Map<string, Phaser.Input.Keyboard.Key> {
         return this.keys;
@@ -35,6 +39,11 @@ export class Mario extends Phaser.GameObjects.Sprite {
         this.currentScene = aParams.scene as GameScene;
         this.initSprite();
         this.currentScene.add.existing(this);
+
+        this.growAudio = this.currentScene.sound.add('grow')
+        this.jumpAudio = this.currentScene.sound.add('jump')
+        this.shrinkAudio = this.currentScene.sound.add('shrink')
+        this.deadAudio = this.currentScene.sound.add('dead')
     }
 
     private initSprite() {
@@ -67,7 +76,6 @@ export class Mario extends Phaser.GameObjects.Sprite {
         // physics
         this.currentScene.physics.world.enable(this);
 
-        this.growMario()
         if (this.marioSize === 'small')
             this.adjustPhysicBodyToSmallSize();
         else 
@@ -230,15 +238,21 @@ export class Mario extends Phaser.GameObjects.Sprite {
     }
 
     public growMario(): void {
+        this.growAudio.play()
         this.marioSize = 'big';
         this.currentScene.registry.set('marioSize', 'big');
         this.adjustPhysicBodyToBigSize();
     }
 
     private shrinkMario(): void {
+        this.shrinkAudio.play()
         this.marioSize = 'small';
         this.currentScene.registry.set('marioSize', 'small');
         this.adjustPhysicBodyToSmallSize();
+        this.setTintFill(0xffffff);
+        this.currentScene.time.delayedCall(500, () => {
+            this.clearTint();
+        }, [], this);  // delay in ms
     }
 
     private adjustPhysicBodyToSmallSize(): void {
@@ -266,21 +280,20 @@ export class Mario extends Phaser.GameObjects.Sprite {
         //     }
         // });
 
-        this.body.setVelocityY(-this.jumpVelo/2);
+        this.body.setVelocityY(-this.jumpVelo/1.5);
             this.isJumping = true;
             this.currentScene.time.delayedCall(200, () => {
-            this.anims.play('characterfall', true);
-
-                
+                this.anims.play('characterfall', true);
             }, [], this);  // delay in ms
     }
 
     public gotHit(): void {
         this.isVulnerable = false;
         if (this.marioSize === 'big') {
-            // this.shrinkMario();
+            this.shrinkMario();
         } else {
         // mario is dying
+            this.deadAudio.play()
             this.isDying = true;
 
             // sets acceleration, velocity and speed to zero

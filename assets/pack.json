@@ -47,6 +47,11 @@
                 "url": "./assets/sprites/Background/Gray.png"
             },
             {
+                "type": "image",
+                "key": "startimg",
+                "url": "./assets/images/start.png"
+            },
+            {
                 "type": "json",
                 "key": "animationJSON",
                 "url": "./assets/animations/animations.json"
@@ -55,6 +60,31 @@
                 "type": "audio",
                 "key": "music",
                 "url": "./assets/sounds/music.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "coin",
+                "url": "./assets/sounds/coin.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "dead",
+                "url": "./assets/sounds/deadth.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "grow",
+                "url": "./assets/sounds/grow.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "jump",
+                "url": "./assets/sounds/jump.mp3"
+            },
+            {
+                "type": "audio",
+                "key": "shrink",
+                "url": "./assets/sounds/shrink.mp3"
             },
             {
                 "type": "spritesheet",

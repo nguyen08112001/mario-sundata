@@ -112,7 +112,10 @@ export class Boss extends Enemy {
             if (this.speed === -200) this.speed = -100
         }, [], this);  // delay in ms
     }
-
+    public gotHitFromBulletOrMarioHasStar() {
+        super.gotHitFromBulletOrMarioHasStar()
+        this.hp.decrease(3)
+    }
     private createPortalExit(){
         let flag = this.currentScene.add.sprite(this.x+100, this.y + 65, 'flaginit', 'flaginit').play('flaginit', true)
         this.currentScene.time.delayedCall(1200, () => {

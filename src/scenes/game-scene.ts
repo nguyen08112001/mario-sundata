@@ -32,6 +32,7 @@ export class GameScene extends Phaser.Scene {
     public portals: Phaser.GameObjects.Group;
     public playerBullets: Phaser.GameObjects.Group;
     public enemyBullets: Phaser.GameObjects.Group;
+    animatedTiles: any;
 
     constructor() {
         super({
@@ -39,9 +40,13 @@ export class GameScene extends Phaser.Scene {
         });
     }
 
+    preload() {
+        this.load.scenePlugin('AnimatedTiles', 'https://raw.githubusercontent.com/nkholski/phaser-animated-tiles/master/dist/AnimatedTiles.js', 'animatedTiles', 'animatedTiles');
+    }
     init(): void {}
     
     create(): void {
+        this.cameras.main.fadeIn(1000, 0, 0, 0)
         // *****************************************************************
         // SETUP TILEMAP
         // *****************************************************************
@@ -68,7 +73,7 @@ export class GameScene extends Phaser.Scene {
         0
         );
         this.foregroundLayer.setName('foregroundLayer');
-
+        this.animatedTiles.init(this.map);
         // set collision for tiles with the property collide set to true
         this.foregroundLayer.setCollisionByProperty({ collide: true });
         this.foregroundLayer.setCollisionByExclusion([-1]);
@@ -213,11 +218,11 @@ export class GameScene extends Phaser.Scene {
         this.player.body.setGravityY(200)
         }
 
-        let music = this.sound.add('music')
-            music.play({
-                volume: 1,
-                loop: true
-            })
+        // let music = this.sound.add('music')
+        //     music.play({
+        //         volume: 1,
+        //         loop: true
+        //     })
     }
 
     update(): void {
@@ -509,7 +514,6 @@ export class GameScene extends Phaser.Scene {
         platform.body.touching.up &&
         player.body.touching.down
         ) {
-        player.body.y = platform.body.y - 27
         player.anims.play('characteridle', true)
         }else {
 
