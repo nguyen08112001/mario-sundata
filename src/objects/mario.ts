@@ -17,6 +17,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
     private toLeft: boolean;
     private disableFireCounter: number;
     private isDisableFire: boolean;
+    private onWall: boolean;
     // input
     private keys: Map<string, Phaser.Input.Keyboard.Key>;
 
@@ -48,7 +49,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
         this.disableFireCounter = 20;
         this.toLeft = false;
         this.jumpVelo = 250;
-
+        this.onWall = false;
         // sprite
         this.setOrigin(0.5, 0.5);
         this.setFlipX(false);
@@ -73,7 +74,7 @@ export class Mario extends Phaser.GameObjects.Sprite {
             this.adjustPhysicBodyToBigSize();
         // this.body.setGravityY(200)
         this.body.maxVelocity.x = 150;
-        this.body.maxVelocity.y = 1000;
+        // this.body.maxVelocity.y = 1000;
     }
 
     private addKey(key: string): Phaser.Input.Keyboard.Key {
@@ -109,6 +110,33 @@ export class Mario extends Phaser.GameObjects.Sprite {
                 this.vulnerableCounter = 100;
                 this.isVulnerable = true;
             }
+        }
+        if ( (this.body.blocked.left  && !this.body.blocked.down) || (this.body.blocked.right && !this.body.blocked.down)) {
+            this.onWall = true;
+            this.anims.play('characterwalljump', true)
+            // if (this.isJumping) return;
+            // this.body.setGravityY(0)
+            // this.body.setAccelerationY(0)
+            // this.body.setVelocityY(0)
+            // this.body.maxVelocity.y = 0
+            // this.body.allowGravity = false
+            // if (this.keys.get('JUMP').isDown) {
+            //     this.body.setVelocityY(-this.jumpVelo);
+            //     this.isJumping = true;
+            // }
+        } else {
+            this.onWall = false;
+            this.body.setMaxVelocityY(1000)
+            // if (this.keys.get('JUMP').isDown && !this.isJumping) {
+            //     this.body.setVelocityY(-this.jumpVelo);
+            //     this.isJumping = true;
+            //     this.anims.play('characterjump', true)
+            //     this.currentScene.time.delayedCall(200, () => {
+            //     this.anims.play('characterfall', true);
+    
+                    
+            //     }, [], this);  // delay in ms
+            // }
         }
     }
 
@@ -149,7 +177,6 @@ export class Mario extends Phaser.GameObjects.Sprite {
     
         // }
 
-        this.scene.input.on('pointerdown', this.handleFire, this)
         this.currentScene.input.keyboard.on('keydown', (event: { code: string; }) => {
             if (event.code === "Space" && !this.isDisableFire) {
                 this.handleFire()
@@ -159,40 +186,22 @@ export class Mario extends Phaser.GameObjects.Sprite {
         })
 
         // handle jumping
-        if (this.keys.get('JUMP').isDown && !this.isJumping) {
+        if ((   this.keys.get('JUMP').isDown && !this.isJumping) 
+            || (this.keys.get('JUMP').isDown && this.onWall)) {
             this.body.setVelocityY(-this.jumpVelo);
             this.isJumping = true;
-            if (this.body.velocity.x >0) {
-                this.scene.tweens.add({
-                    targets: this,
-                    props: { angle: 360 },
-                    duration: 300,
-                    ease: 'Power0'
-                }) 
-            } else {
-                this.scene.tweens.add({
-                    targets: this,
-                    props: { angle: -360 },
-                    duration: 300,
-                    ease: 'Power0'
-                })
-            } 
-            // this.setFrame(10)
-            this.anims.stop()
+            this.anims.play('characterjump', true)
+            this.currentScene.time.delayedCall(200, () => {
+            this.anims.play('characterfall', true);            
+            }, [], this); 
 
         }
     }
 
     private handleAnimations(): void {
-        if (this.body.velocity.y !== 0) {
+        if (this.body.velocity.y !== 0 && !this.onWall) {
         // mario is jumping or falling
-        // this.anims.stop();
-        // if (this.marioSize === 'small') {
-        //   this.setFrame(4);
-        // } else {
-        //   this.setFrame(10);
-        // }
-        this.anims.play('characterfall', true);
+            // this.anims.play('characterfall', true);
         
         } else if (this.body.velocity.x !== 0) {
         // mario is moving horizontal
@@ -214,25 +223,9 @@ export class Mario extends Phaser.GameObjects.Sprite {
             } else {
                 this.anims.play('character', true);
             }
-        // if (this.body.velocity.x > 0) {
-        //   this.anims.play(this.marioSize + 'MarioWalk', true);
-        // } else {
-        //   this.anims.play(this.marioSize + 'MarioWalk', true);
-        // }
         } else {
         // mario is standing still
-        // this.anims.stop();
             this.anims.play('characteridle', true);
-        
-        // if (this.marioSize === 'small') {
-        //   this.setFrame(0);
-        // } else {
-        //   if (this.keys.get('DOWN').isDown) {
-        //     this.setFrame(13);
-        //   } else {
-        //     this.setFrame(6);
-        //   }
-        // }
         }
     }
 
@@ -261,19 +254,31 @@ export class Mario extends Phaser.GameObjects.Sprite {
     }
 
     public bounceUpAfterHitEnemyOnHead(): void {
-        this.currentScene.add.tween({
-            targets: this,
-            props: { y: this.y - 5 },
-            duration: 200,
-            ease: 'Power1',
-            yoyo: true
-        });
+        // this.currentScene.add.tween({
+        //     targets: this,
+        //     props: { y: this.y - 50 },
+        //     duration: 350,
+        //     ease: 'Power1',
+        //     yoyo: true,
+        //     onComplete: () => {
+        //         this.anims.play('characterfall', true);
+        //         console.log(345)
+        //     }
+        // });
+
+        this.body.setVelocityY(-this.jumpVelo/2);
+            this.isJumping = true;
+            this.currentScene.time.delayedCall(200, () => {
+            this.anims.play('characterfall', true);
+
+                
+            }, [], this);  // delay in ms
     }
 
     public gotHit(): void {
         this.isVulnerable = false;
         if (this.marioSize === 'big') {
-            this.shrinkMario();
+            // this.shrinkMario();
         } else {
         // mario is dying
             this.isDying = true;

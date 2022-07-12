@@ -38,7 +38,7 @@ export class Brick extends Phaser.GameObjects.Sprite {
                 let brick = this.currentScene.add
                 .sprite(this.x, this.y, 'brick')
                 .setOrigin(0, 0)
-                .setDisplaySize(4, 4);
+                .setDisplaySize(8, 8);
 
                 this.currentScene.physics.world.enable(brick);
 

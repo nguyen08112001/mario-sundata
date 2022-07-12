@@ -2,6 +2,7 @@ export class MenuScene extends Phaser.Scene {
   private startKeyLevel1: Phaser.Input.Keyboard.Key;
   private startKeyLevel2: Phaser.Input.Keyboard.Key;
   private startKeyLevel3: Phaser.Input.Keyboard.Key;
+  private startKeyLevel4: Phaser.Input.Keyboard.Key;
   private bitmapTexts: Phaser.GameObjects.BitmapText[] = [];
 
   constructor() {
@@ -25,6 +26,11 @@ export class MenuScene extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.F
     );
     this.startKeyLevel3.isDown = false;
+
+    this.startKeyLevel4 = this.input.keyboard.addKey(
+      Phaser.Input.Keyboard.KeyCodes.G
+    );
+    this.startKeyLevel4.isDown = false;
 
     this.initGlobalDataManager();
   }
@@ -61,6 +67,12 @@ export class MenuScene extends Phaser.Scene {
       this.scene.start('GameScene');
       this.scene.bringToTop('HUDScene');
     }
+    if (this.startKeyLevel4.isDown) {
+      this.registry.set('level', 'level4');
+      this.scene.start('HUDScene');
+      this.scene.start('GameScene');
+      this.scene.bringToTop('HUDScene');
+    }
   }
 
   private initGlobalDataManager(): void {
@@ -71,7 +83,7 @@ export class MenuScene extends Phaser.Scene {
     this.registry.set('score', 0);
     this.registry.set('coins', 0);
     this.registry.set('lives', 2);
-    this.registry.set('spawn', { x: 12, y: 44, dir: 'down' });
+    this.registry.set('spawn', { x: 1000, y: 44, dir: 'down' });
     this.registry.set('marioSize', 'small');
   }
 }

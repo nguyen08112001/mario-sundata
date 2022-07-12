@@ -63,7 +63,7 @@ export class Enemy extends Phaser.GameObjects.Sprite {
 
     public gotHitOnHead(): void {
         if (this.heal < 0) return;
-        this.heal -= 3;
+        this.heal -= 6;
         if (this.heal <= 0) {
             this.addDeadTween()
             this.isDying = true;

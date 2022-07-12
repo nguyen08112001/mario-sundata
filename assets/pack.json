@@ -23,6 +23,11 @@
             },
             {
                 "type": "tilemapTiledJSON",
+                "key": "level4",
+                "url": "./assets/maps/level4.json"
+            },
+            {
+                "type": "tilemapTiledJSON",
                 "key": "level1-1",
                 "url": "./assets/maps/level1-1.json"
             },
@@ -33,8 +38,13 @@
             },
             {
                 "type": "image",
+                "key": "terrain",
+                "url": "./assets/sprites/Terrain/Terrain.png"
+            },
+            {
+                "type": "image",
                 "key": "bg",
-                "url": "./assets/sprites/Background/Yellow.png"
+                "url": "./assets/sprites/Background/Gray.png"
             },
             {
                 "type": "json",
@@ -53,6 +63,24 @@
                 "frameConfig": {
                     "frameWidth": 16,
                     "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "flaginit",
+                "url": "./assets/sprites/Items/Checkpoints/Checkpoint/CheckpointInit.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 64
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "flagidle",
+                "url": "./assets/sprites/Items/Checkpoints/Checkpoint/CheckpointIdle.png",
+                "frameConfig": {
+                    "frameWidth": 64,
+                    "frameHeight": 64
                 }
             },
             {
@@ -149,6 +177,15 @@
                 "type": "spritesheet",
                 "key": "characterjump",
                 "url": "./assets/sprites/characterjump.png",
+                "frameConfig": {
+                    "frameWidth": 32,
+                    "frameHeight": 32
+                }
+            },
+            {
+                "type": "spritesheet",
+                "key": "characterwalljump",
+                "url": "./assets/sprites/characterwalljump.png",
                 "frameConfig": {
                     "frameWidth": 32,
                     "frameHeight": 32
